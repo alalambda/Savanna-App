@@ -32,7 +32,7 @@ namespace SavannaApp.Runner
                 if (string.Equals(ConstantValues.Lion, a, StringComparison.OrdinalIgnoreCase)) lionCount++;
                 else antelopeCount++;
             }
-            Field field = _fieldLogic.GetInitialField(lionCount, antelopeCount);
+            Field field = _fieldLogic.InitAnimalsOnField(animals);
             _userInterface.PrintField(field);
             Console.ReadLine();
         }

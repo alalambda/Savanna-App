@@ -7,6 +7,6 @@ namespace SavannaApp.Interfaces
 {
     public interface IFieldLogic
     {
-        Field GetInitialField(int lionCount, int antilopeCount);
+        Field InitAnimalsOnField(List<string> animals);
     }
 }
