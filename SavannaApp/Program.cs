@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SavannaApp.Runner;
+using System;
 
 namespace SavannaApp
 {
@@ -6,7 +7,7 @@ namespace SavannaApp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            new GameRunner().Start();
         }
     }
 }

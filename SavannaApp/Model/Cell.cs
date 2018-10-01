@@ -6,5 +6,6 @@ namespace SavannaApp.Model
 {
     public class Cell
     {
+        public Animal Animal { get; set; }
     }
 }

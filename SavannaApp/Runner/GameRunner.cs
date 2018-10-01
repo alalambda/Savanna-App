@@ -6,5 +6,9 @@ namespace SavannaApp.Runner
 {
     public class GameRunner
     {
+        public void Start()
+        {
+
+        }
     }
 }
