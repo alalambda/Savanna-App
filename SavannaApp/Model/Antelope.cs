@@ -8,6 +8,10 @@ namespace SavannaApp.Model
     {
         public bool Avoid(Animal animal)
         {
+            if (animal is Lion)
+            {
+
+            }
             return false;
         }
     }

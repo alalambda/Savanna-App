@@ -1,4 +1,6 @@
-﻿using SavannaApp.Interfaces;
+﻿using SavannaApp.Constants;
+using SavannaApp.Enum;
+using SavannaApp.Interfaces;
 using SavannaApp.Model;
 using System;
 using System.Collections.Generic;
@@ -14,24 +16,47 @@ namespace SavannaApp.UserInterface
             {
                 for (int y = 0; y < field.DimY; y++)
                 {
-                    //Console.Write((int) field.Cells[x, y].State);
+                    string outputValue;
+                    if (field.Cells[x, y].State == State.Empty)
+                        outputValue = ConstantValues.Empty;
+                    else if (field.Cells[x, y].State == State.Antelope)
+                        outputValue = ConstantValues.Antelope;
+                    else if (field.Cells[x, y].State == State.Lion)
+                        outputValue = ConstantValues.Lion;
+                    else if (field.Cells[x, y].State == State.LionCatchesAntelope)
+                        outputValue = ConstantValues.LionCatchesAntelope;
+                    else outputValue = ConstantValues.LionEatsAntelope;
+
+                    Console.Write($"{outputValue} ");
                 }
                 Console.WriteLine();
             }
         }
 
-        public int GetUserInput(string paramName)
+        public void EnterAnimalsMessage()
         {
-            int dimension;
-            Console.WriteLine($"{paramName} = ");
+            Console.WriteLine("Enter animals. A - antelope, L - lion. End your input with 0.");
+        }
+
+        public List<string> GetAnimalInput()
+        {
+            var animals = new List<string>();
+
+            EnterAnimalsMessage();
             string input = Console.ReadLine();
-            while (!int.TryParse(input, out dimension))
+            while (input != "0")
             {
-                InvalidInputMessage();
-                Console.WriteLine($"{paramName} = ");
+                while (input != ConstantValues.Antelope && input != ConstantValues.Lion)
+                {
+                    InvalidInputMessage();
+                    EnterAnimalsMessage();
+                    input = Console.ReadLine();
+                }
+                animals.Add(input);
                 input = Console.ReadLine();
             }
-            return dimension;
+            
+            return animals;
         }
 
         private void InvalidInputMessage()

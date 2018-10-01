@@ -5,10 +5,8 @@ using System.Text;
 
 namespace SavannaApp.Interfaces
 {
-    public interface IUserInterface
+    public interface IFieldLogic
     {
-        void PrintField(Field field);
-        List<string> GetAnimalInput();
-
+        Field GetInitialField(int lionCount, int antilopeCount);
     }
 }
