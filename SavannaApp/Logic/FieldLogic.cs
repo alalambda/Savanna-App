@@ -15,7 +15,7 @@ namespace SavannaApp.Logic
 
         public FieldLogic()
         {
-            _possibleStates = new List<string> { ConstantValues.Antelope, ConstantValues.Antelope, ConstantValues.Empty };
+            _possibleStates = new List<string> { ConstantValues.Lion, ConstantValues.Antelope, ConstantValues.Empty };
         }
 
         public Field GetInitialField(int lionCount, int antilopeCount)
