@@ -43,13 +43,16 @@ namespace SavannaApp.Runner
                 {
                     Coordinates coordinates = _animalLogic.MakeRandomMove(animal.Coordinates, field);
 
+                    // free cell from animal
                     int x = animal.Coordinates.X;
                     int y = animal.Coordinates.Y;
-
-                    animal.Coordinates = coordinates;
                     field.Cells[x, y].Animal = null;
                     field.Cells[x, y].State = State.Empty;
+
+                    // assign animal new cell
+                    animal.Coordinates = coordinates;
                     field.Cells[coordinates.X, coordinates.Y].Animal = animal;
+                    
                     var state = typeof(Antelope) == animal.GetType() ? State.Antelope : State.Lion;
                     field.Cells[coordinates.X, coordinates.Y].State = state;
                 }   
