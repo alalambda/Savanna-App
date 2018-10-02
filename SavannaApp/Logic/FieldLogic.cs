@@ -12,9 +12,9 @@ namespace SavannaApp.Logic
     {
         private readonly IAnimalLogic _animalLogic;
 
-        public FieldLogic(Random random)
+        public FieldLogic()
         {
-            _animalLogic = new AnimalLogic(random);
+            _animalLogic = new AnimalLogic();
         }
 
         public Field MakeField(List<Animal> animals)

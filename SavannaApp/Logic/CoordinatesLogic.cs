@@ -12,10 +12,10 @@ namespace SavannaApp.Logic
         private readonly IAnimalLogic _animalLogic;
         private readonly Random _random;
 
-        public CoordinatesLogic(Random random)
+        public CoordinatesLogic()
         {
-            _random = random;
-            _animalLogic = new AnimalLogic(random);
+            _random = new Random(Guid.NewGuid().GetHashCode());
+            _animalLogic = new AnimalLogic();
         }
 
         public List<Animal> InitAnimalCoordinates(List<string> animalStrings)

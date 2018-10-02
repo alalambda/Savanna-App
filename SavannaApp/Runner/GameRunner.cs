@@ -18,15 +18,13 @@ namespace SavannaApp.Runner
         private readonly IFieldLogic _fieldLogic;
         private readonly IAnimalLogic _animalLogic;
         private readonly ICoordinatesLogic _coordinatesLogic;
-        private readonly Random _random;
 
         public GameRunner()
         {
-            _random = new Random();
             _userInterface = new ConsoleUserInterface();
-            _fieldLogic = new FieldLogic(_random);
-            _animalLogic = new AnimalLogic(_random);
-            _coordinatesLogic = new CoordinatesLogic(_random);
+            _fieldLogic = new FieldLogic();
+            _animalLogic = new AnimalLogic();
+            _coordinatesLogic = new CoordinatesLogic();
         }
 
         public void Start()

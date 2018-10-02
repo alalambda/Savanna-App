@@ -9,31 +9,42 @@ namespace SavannaApp.Logic
 {
     public class AnimalLogic : IAnimalLogic
     {
-
         private readonly Random _random;
 
-        public AnimalLogic(Random random)
+        public AnimalLogic()
         {
-            _random = random;
+            _random = new Random(Guid.NewGuid().GetHashCode());
         }
 
         public Coordinates MakeRandomMove(Coordinates currentCoordinates, Field field)
         {
-            int x = _random.Next(-1, 1);
-            int y = _random.Next(-1, 1);
+            int x = _random.Next(-1, 2);
+            int y = _random.Next(-1, 2);
             while (x == 0 && y == 0)
             {
-                x = _random.Next(-1, 1);
-                y = _random.Next(-1, 1);
+                x = _random.Next(-1, 2);
+                y = _random.Next(-1, 2);
             }
 
             int newX = currentCoordinates.X + x;
             int newY = currentCoordinates.Y + y;
 
-            if (newX < 0) newX = 0;
-            else if (newX > ConstantValues.FieldDimensionX - 1) newX = ConstantValues.FieldDimensionX - 1;
-            if (newY < 0) newY = 0;
-            else if (newY > ConstantValues.FieldDimensionY - 1) newY = ConstantValues.FieldDimensionY - 1;
+            if (newX < 0)
+            {
+                newX = 0;
+            }
+            else if (newX > ConstantValues.FieldDimensionX - 1)
+            {
+                newX = ConstantValues.FieldDimensionX - 1;
+            }
+            if (newY < 0)
+            {
+                newY = 0;
+            }
+            else if (newY > ConstantValues.FieldDimensionY - 1)
+            {
+                newY = ConstantValues.FieldDimensionY - 1;
+            }
 
             if (field.Cells[newX, newY].Animal != null)
             {
