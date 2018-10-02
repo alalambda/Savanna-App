@@ -1,7 +1,6 @@
 ﻿using SavannaApp.Constants;
 using SavannaApp.Interfaces;
 using SavannaApp.Model;
-using SavannaApp.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,15 +9,22 @@ namespace SavannaApp.Logic
 {
     public class AnimalLogic : IAnimalLogic
     {
+
+        private readonly Random _random;
+
+        public AnimalLogic(Random random)
+        {
+            _random = random;
+        }
+
         public Coordinates MakeRandomMove(Coordinates currentCoordinates, Field field)
         {
-            RandomizerUtil randomizer = new RandomizerUtil();
-            int x = randomizer.GetRandomInRange(-1, 1);
-            int y = randomizer.GetRandomInRange(-1, 1);
+            int x = _random.Next(-1, 1);
+            int y = _random.Next(-1, 1);
             while (x == 0 && y == 0)
             {
-                x = randomizer.GetRandomInRange(-1, 1);
-                y = randomizer.GetRandomInRange(-1, 1);
+                x = _random.Next(-1, 1);
+                y = _random.Next(-1, 1);
             }
 
             int newX = currentCoordinates.X + x;

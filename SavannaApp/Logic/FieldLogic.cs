@@ -2,7 +2,6 @@
 using SavannaApp.Enum;
 using SavannaApp.Interfaces;
 using SavannaApp.Model;
-using SavannaApp.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,9 +12,9 @@ namespace SavannaApp.Logic
     {
         private readonly IAnimalLogic _animalLogic;
 
-        public FieldLogic()
+        public FieldLogic(Random random)
         {
-            _animalLogic = new AnimalLogic();
+            _animalLogic = new AnimalLogic(random);
         }
 
         public Field MakeField(List<Animal> animals)
