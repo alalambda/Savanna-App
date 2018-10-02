@@ -1,51 +1,48 @@
-﻿using SavannaApp.Interfaces;
+﻿using SavannaApp.Constants;
+using SavannaApp.Interfaces;
 using SavannaApp.Model;
+using SavannaApp.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SavannaApp.Logic
 {
-    public class AnimalLogic //: IAnimalLogic
+    public class AnimalLogic : IAnimalLogic
     {
         /*
-        public void Move(Field field, Animal animal)
+        public void Move(Animal animal, Field field)
         {
-            // move randomly
             var visionRange = animal.VisionRange;
-            for (int i = -visionRange; i <= visionRange; i++)
+            for (int y = -visionRange; y <= visionRange; y++)
             {
-                for (int j = -1; j <= 1; j++)
+                for (int x = -visionRange; x <= visionRange; x++)
                 {
-                    if (i != 0 || j != 0)
-                    {
-                        int width = x + j;
-                        int height = y + i;
+                    int width = x + animal.Coordinates.X;
+                    int height = y + animal.Coordinates.Y;
 
 
-                        if (width < 0)
-                        {
-                            width = field.DimY - 1;
-                        }
-                        else if (width > field.DimY - 1)
-                        {
-                            width = 0;
-                        }
-
-                        if (height < 0)
-                        {
-                            height = field.DimX - 1;
-                        }
-                        else if (height > field.DimX - 1)
-                        {
-                            height = 0;
-                        }
-
-                        //if (State.Alive.Equals(matrixField.Cells[height, width].State)) alive++;
-                    }
                 }
             }
         }
-    */
+        */
+
+        public Coordinates MoveRandomly(Field field)
+        {
+            RandomizerUtil randomizer = new RandomizerUtil();
+            int x = randomizer.GetRandomInRange(-1, 1);
+            int y = randomizer.GetRandomInRange(-1, 1);
+            while (field.Cells[x, y].Animal != null && x != 0 && y != 0)
+            {
+                x = randomizer.GetRandomInRange(-1, 1);
+                y = randomizer.GetRandomInRange(-1, 1);
+            }
+            return new Coordinates(x, y);
+        }
+
+        public Animal GetAnimalByCoordinates(List<Animal> animals, Coordinates coordinates)
+        {
+            return animals.Find(x => x.Coordinates.Equals(coordinates));
+        }
     }
 }

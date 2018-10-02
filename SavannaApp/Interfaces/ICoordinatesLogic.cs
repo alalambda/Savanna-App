@@ -5,8 +5,8 @@ using System.Text;
 
 namespace SavannaApp.Interfaces
 {
-    public interface IFieldLogic
+    public interface ICoordinatesLogic
     {
-        Field InitField(List<Animal> animals);
+        List<Animal> InitAnimalCoordinates(List<string> animalStrings);
     }
 }

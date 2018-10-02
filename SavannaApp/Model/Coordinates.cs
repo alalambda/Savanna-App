@@ -14,5 +14,19 @@ namespace SavannaApp.Model
             X = x;
             Y = y;
         }
+
+        public override bool Equals(object value)
+        {
+            Coordinates coordinates = value as Coordinates;
+
+            return (coordinates != null)
+                && (X == coordinates.X)
+                && (Y == coordinates.Y);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(X, Y);
+        }
     }
 }

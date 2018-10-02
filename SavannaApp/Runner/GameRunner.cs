@@ -14,26 +14,28 @@ namespace SavannaApp.Runner
     {
         private readonly IUserInterface _userInterface;
         private readonly IFieldLogic _fieldLogic;
+        private readonly IAnimalLogic _animalLogic;
+        private readonly ICoordinatesLogic _coordinatesLogic;
 
         public GameRunner()
         {
             _userInterface = new ConsoleUserInterface();
             _fieldLogic = new FieldLogic();
+            _animalLogic = new AnimalLogic();
+            _coordinatesLogic = new CoordinatesLogic();
         }
 
         public void Start()
         {
-            var animals = _userInterface.GetAnimalInput();
-
-            int lionCount = 0;
-            int antelopeCount = 0;
-            foreach (var a in animals)
-            {
-                if (string.Equals(ConstantValues.Lion, a, StringComparison.OrdinalIgnoreCase)) lionCount++;
-                else antelopeCount++;
-            }
-            Field field = _fieldLogic.InitAnimalsOnField(animals);
+            var animalsInput = _userInterface.GetAnimalInput();
+            List<Animal> animals = _coordinatesLogic.InitAnimalCoordinates(animalsInput);
+            Field field = _fieldLogic.InitField(animals);
             _userInterface.PrintField(field);
+            //foreach (var animal in animals)
+            //{
+            //    Coordinates coordinates = _animalLogic.MoveRandomly(field);
+            //}
+
             Console.ReadLine();
         }
     }

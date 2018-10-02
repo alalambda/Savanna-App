@@ -12,10 +12,10 @@ namespace SavannaApp.UserInterface
     {
         public void PrintField(Field field)
         {
-            for (int x = 0; x < field.DimX; x++)
+            for (int y = 0; y < field.Dimensions.Y; y++)
             {
-                for (int y = 0; y < field.DimY; y++)
-                {
+                for (int x = 0; x < field.Dimensions.X; x++)
+                    {
                     string outputValue;
                     if (field.Cells[x, y].State == State.Empty)
                         outputValue = ConstantValues.Empty;
