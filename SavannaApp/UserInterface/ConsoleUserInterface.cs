@@ -15,8 +15,8 @@ namespace SavannaApp.UserInterface
             for (int y = 0; y < field.Dimensions.Y; y++)
             {
                 for (int x = 0; x < field.Dimensions.X; x++)
-                    {
-                    string outputValue;
+                {
+                    char outputValue;
                     if (field.Cells[x, y].State == State.Empty)
                         outputValue = ConstantValues.Empty;
                     else if (field.Cells[x, y].State == State.Antelope)
@@ -38,25 +38,14 @@ namespace SavannaApp.UserInterface
             Console.WriteLine("Enter animals. A - antelope, L - lion. End your input with 0.");
         }
 
-        public List<string> GetAnimalInput()
+        public char GetAnimalChar()
         {
-            var animals = new List<string>();
-
-            EnterAnimalsMessage();
-            string input = Console.ReadLine();
-            while (input != "0")
+            ConsoleKeyInfo input = Console.ReadKey();
+            while (input.KeyChar != ConstantValues.Antelope && input.KeyChar != ConstantValues.Lion)
             {
-                while (input != ConstantValues.Antelope && input != ConstantValues.Lion)
-                {
-                    InvalidInputMessage();
-                    EnterAnimalsMessage();
-                    input = Console.ReadLine();
-                }
-                animals.Add(input);
-                input = Console.ReadLine();
+                input = Console.ReadKey();
             }
-            
-            return animals;
+            return input.KeyChar;
         }
 
         private void InvalidInputMessage()

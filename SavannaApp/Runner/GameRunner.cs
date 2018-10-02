@@ -29,8 +29,8 @@ namespace SavannaApp.Runner
 
         public void Start()
         {
-            var animalsInput = _userInterface.GetAnimalInput();
-            var animals = _coordinatesLogic.GenerateAnimalCoordinates(animalsInput);
+            var animalChar = _userInterface.GetAnimalChar();
+            var animalCoordinates = _coordinatesLogic.GenerateAnimalCoordinates();
             Field field;
 
             while(_animalLogic.CountAntelopes(animals) != 0)

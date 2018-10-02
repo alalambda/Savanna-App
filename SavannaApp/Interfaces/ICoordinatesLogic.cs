@@ -7,6 +7,6 @@ namespace SavannaApp.Interfaces
 {
     public interface ICoordinatesLogic
     {
-        List<Animal> GenerateAnimalCoordinates(List<string> animalStrings);
+        Coordinates GenerateAnimalCoordinates();
     }
 }

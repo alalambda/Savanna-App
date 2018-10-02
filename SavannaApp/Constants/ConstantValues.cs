@@ -12,10 +12,10 @@ namespace SavannaApp.Constants
         public const int AntelopeVisionRange = 2;
         public const int LionVisionRange = 2;
 
-        public const string Lion = "L";
-        public const string Antelope = "A";
-        public const string Empty = "-";
-        public const string LionCatchesAntelope = "O";
-        public const string LionEatsAntelope = "X";
+        public const char Lion = 'L';
+        public const char Antelope = 'A';
+        public const char Empty = '-';
+        public const char LionCatchesAntelope = 'O';
+        public const char LionEatsAntelope = 'X';
     }
 }
