@@ -7,10 +7,6 @@ namespace SavannaApp.Model
     public class Animal
     {
         public int VisionRange { get; set; }
-
-        public void Move()
-        {
-
-        }
+        public Coordinates Coordinates { get; set; }
     }
 }
