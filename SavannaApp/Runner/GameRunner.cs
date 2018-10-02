@@ -30,7 +30,7 @@ namespace SavannaApp.Runner
         public void Start()
         {
             var animalsInput = _userInterface.GetAnimalInput();
-            List<Animal> animals = _coordinatesLogic.InitAnimalCoordinates(animalsInput);
+            var animals = _coordinatesLogic.GenerateAnimalCoordinates(animalsInput);
             Field field;
 
             while(_animalLogic.CountAntelopes(animals) != 0)

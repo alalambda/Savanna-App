@@ -18,18 +18,18 @@ namespace SavannaApp.Logic
             _animalLogic = new AnimalLogic();
         }
 
-        public List<Animal> InitAnimalCoordinates(List<string> animalStrings)
+        public List<Animal> GenerateAnimalCoordinates(List<string> animalStrings)
         {
             var animals = new List<Animal>(animalStrings.Count);
             foreach (var animal in animalStrings)
             {
-                int x = _random.Next(0, ConstantValues.FieldDimensionX - 1);
-                int y = _random.Next(0, ConstantValues.FieldDimensionY - 1);
+                int x = _random.Next(0, ConstantValues.FieldDimensionX);
+                int y = _random.Next(0, ConstantValues.FieldDimensionY);
                 Coordinates coordinates = new Coordinates(x, y);
                 while (_animalLogic.GetAnimalByCoordinates(animals, coordinates) != null)
                 {
-                    x = _random.Next(0, ConstantValues.FieldDimensionX - 1);
-                    y = _random.Next(0, ConstantValues.FieldDimensionY - 1);
+                    x = _random.Next(0, ConstantValues.FieldDimensionX);
+                    y = _random.Next(0, ConstantValues.FieldDimensionY);
                     coordinates = new Coordinates(x, y);
                 }
                 if (ConstantValues.Antelope == animal)
