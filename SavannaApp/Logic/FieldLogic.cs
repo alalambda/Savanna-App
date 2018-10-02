@@ -18,7 +18,7 @@ namespace SavannaApp.Logic
             _animalLogic = new AnimalLogic();
         }
 
-        public Field InitField(List<Animal> animals)
+        public Field MakeField(List<Animal> animals)
         {
             var field = new Field(ConstantValues.FieldDimensionX, ConstantValues.FieldDimensionY);
             for (int y = 0; y < ConstantValues.FieldDimensionY; y++)
@@ -39,8 +39,6 @@ namespace SavannaApp.Logic
                 }
             }
             return field;
-        }
-
-        
+        }   
     }
 }

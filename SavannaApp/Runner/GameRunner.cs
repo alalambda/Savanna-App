@@ -1,4 +1,5 @@
 ﻿using SavannaApp.Constants;
+using SavannaApp.Enum;
 using SavannaApp.Interfaces;
 using SavannaApp.Logic;
 using SavannaApp.Model;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace SavannaApp.Runner
 {
@@ -29,13 +31,29 @@ namespace SavannaApp.Runner
         {
             var animalsInput = _userInterface.GetAnimalInput();
             List<Animal> animals = _coordinatesLogic.InitAnimalCoordinates(animalsInput);
-            Field field = _fieldLogic.InitField(animals);
-            _userInterface.PrintField(field);
-            //foreach (var animal in animals)
-            //{
-            //    Coordinates coordinates = _animalLogic.MoveRandomly(field);
-            //}
+            Field field;
 
+            while(_animalLogic.CountAntelopes(animals) != 0)
+            {
+                Thread.Sleep(1000);
+                Console.Clear();
+                field = _fieldLogic.MakeField(animals);
+                _userInterface.PrintField(field);
+                foreach (var animal in animals)
+                {
+                    Coordinates coordinates = _animalLogic.MakeRandomMove(animal.Coordinates, field);
+
+                    int x = animal.Coordinates.X;
+                    int y = animal.Coordinates.Y;
+
+                    animal.Coordinates = coordinates;
+                    field.Cells[x, y].Animal = null;
+                    field.Cells[x, y].State = State.Empty;
+                    field.Cells[coordinates.X, coordinates.Y].Animal = animal;
+                    var state = typeof(Antelope) == animal.GetType() ? State.Antelope : State.Lion;
+                    field.Cells[coordinates.X, coordinates.Y].State = state;
+                }   
+            }
             Console.ReadLine();
         }
     }

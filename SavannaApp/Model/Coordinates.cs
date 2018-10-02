@@ -17,9 +17,7 @@ namespace SavannaApp.Model
 
         public override bool Equals(object value)
         {
-            Coordinates coordinates = value as Coordinates;
-
-            return (coordinates != null)
+            return (value is Coordinates coordinates)
                 && (X == coordinates.X)
                 && (Y == coordinates.Y);
         }
