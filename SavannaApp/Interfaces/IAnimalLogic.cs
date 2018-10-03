@@ -7,9 +7,8 @@ namespace SavannaApp.Interfaces
 {
     public interface IAnimalLogic
     {
-        Coordinates MakeRandomMove(Coordinates currentCoordinates, Field field);
-        Animal GetAnimalByCoordinates(List<Animal> animals, Coordinates coordinates);
-        int CountAntelopes(List<Animal> animals);
-        int CountLions(List<Animal> animals);
+        Animal FindAnimalByCoordinates(List<Animal> animals, Coordinates coordinates);
+        Animal CreateAnimal(char animalChar);
+        int CountAnimalsByType(List<Animal> animals, Type animalType);
     }
 }

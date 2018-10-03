@@ -17,106 +17,61 @@ namespace SavannaApp.Runner
     public class GameRunner
     {
         private readonly IUserInterface _userInterface;
+
         private readonly IFieldLogic _fieldLogic;
-        private readonly IAnimalLogic _animalLogic;
+        private readonly IMoveLogic _moveLogic;
         private readonly ICoordinatesLogic _coordinatesLogic;
+        private readonly IAnimalLogic _animalLogic;
 
         public GameRunner()
         {
             _userInterface = new ConsoleUserInterface();
+
             _fieldLogic = new FieldLogic();
-            _animalLogic = new AnimalLogic();
+            _moveLogic = new MoveLogic();
             _coordinatesLogic = new CoordinatesLogic();
+            _animalLogic = new AnimalLogic();
         }
 
         public void Start()
         {
-            Field field;
+            var field = new Field(ConstantValues.FieldDimensionX, ConstantValues.FieldDimensionY);
             var animals = new List<Animal>();
 
             do
             {
-                field = _fieldLogic.MakeField(animals);
                 Console.Clear();
+                field = _fieldLogic.MakeField(field, animals);
                 _userInterface.PrintField(field);
-
-                while (Console.KeyAvailable == false && animals.Count != 0)
-                {
-                    foreach (var animal in animals)
-                    {
-                        Coordinates coordinates = _animalLogic.MakeRandomMove(animal.Coordinates, field);
-
-                        // free cell from animal
-                        int x = animal.Coordinates.X;
-                        int y = animal.Coordinates.Y;
-                        field.Cells[x, y].Animal = null;
-                        field.Cells[x, y].State = State.Empty;
-
-                        // assign animal new cell
-                        animal.Coordinates = coordinates;
-                        field.Cells[coordinates.X, coordinates.Y].Animal = animal;
-
-                        var state = typeof(Antelope) == animal.GetType() ? State.Antelope : State.Lion;
-                        field.Cells[coordinates.X, coordinates.Y].State = state;
-                    }
-                    field = _fieldLogic.MakeField(animals);
-                    Thread.Sleep(1000);
-                    Console.Clear();
-                    _userInterface.PrintField(field);
-                }
 
                 char animalChar = _userInterface.GetAnimalChar();
                 if (animalChar != ConstantValues.Antelope && animalChar != ConstantValues.Lion)
                 {
                     continue;
                 }
+                var newAnimal = _animalLogic.CreateAnimal(animalChar);
+                if (newAnimal != null) animals.Add(newAnimal);
 
-                var animalCoordinates = _coordinatesLogic.GenerateAnimalCoordinates();
-                var animalState = animalChar == ConstantValues.Antelope ? State.Antelope : State.Lion;
-                Animal unknownAnimal;
-                if (animalState == State.Antelope)
+                foreach (var animal in animals)
                 {
-                    unknownAnimal = new Antelope() { Coordinates = animalCoordinates };
+                    var coordinates = 
+                        _coordinatesLogic.GenerateRandomCoordinates(0, ConstantValues.FieldDimensionX);
+                    animal.Coordinates = coordinates;
                 }
-                else
+
+                while (Console.KeyAvailable == false && animals.Count != 0)
                 {
-                    unknownAnimal = new Lion() { Coordinates = animalCoordinates };
+                    foreach (var animal in animals)
+                    {
+                        var coordinates = _moveLogic.MakeRandomMove(animal.Coordinates, field);
+                        animal.Coordinates = coordinates;
+                    }
+                    Thread.Sleep(1000);
+                    Console.Clear();
+                    field = _fieldLogic.MakeField(field, animals);
+                    _userInterface.PrintField(field);
                 }
-                animals.Add(unknownAnimal);
             } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
-            Console.ReadLine();
         }
-
-        public Animal MoveAnimal(Animal animal, Field field)
-        {
-            //foreach (var animal in animals)
-            //{
-                Coordinates coordinates = _animalLogic.MakeRandomMove(animal.Coordinates, field);
-
-                // free cell from animal
-                int x = animal.Coordinates.X;
-                int y = animal.Coordinates.Y;
-                //field.Cells[x, y].Animal = null;
-                //field.Cells[x, y].State = State.Empty;
-
-                // assign animal new cell
-                animal.Coordinates = coordinates;
-                //field.Cells[coordinates.X, coordinates.Y].Animal = animal;
-
-                //var state = typeof(Antelope) == animal.GetType() ? State.Antelope : State.Lion;
-                //field.Cells[coordinates.X, coordinates.Y].State = state;
-            //}
-            return animal;
-        }
-
-        //public Field UpdateField(Animal animal, Field field)
-        //{
-        //    field.Cells[x, y].Animal = null;
-        //    field.Cells[x, y].State = State.Empty;
-        //    field.Cells[coordinates.X, coordinates.Y].Animal = animal;
-        //    var state = typeof(Antelope) == animal.GetType() ? State.Antelope : State.Lion;
-        //    field.Cells[coordinates.X, coordinates.Y].State = state;
-        //    return field;
-        //}
     }
 }

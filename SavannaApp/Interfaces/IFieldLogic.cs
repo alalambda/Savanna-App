@@ -7,6 +7,6 @@ namespace SavannaApp.Interfaces
 {
     public interface IFieldLogic
     {
-        Field MakeField(List<Animal> animals);
+        Field MakeField(Field field, List<Animal> animals);
     }
 }

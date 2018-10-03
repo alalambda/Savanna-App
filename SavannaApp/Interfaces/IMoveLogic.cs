@@ -5,8 +5,8 @@ using System.Text;
 
 namespace SavannaApp.Interfaces
 {
-    public interface ICoordinatesLogic
+    public interface IMoveLogic
     {
-        Coordinates GenerateRandomCoordinates(int from, int toExclusive);
+        Coordinates MakeRandomMove(Coordinates currentCoordinates, Field field);
     }
 }

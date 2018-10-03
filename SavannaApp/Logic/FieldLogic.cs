@@ -10,26 +10,32 @@ namespace SavannaApp.Logic
 {
     public class FieldLogic : IFieldLogic
     {
+        private readonly ICellLogic _cellLogic;
         private readonly IAnimalLogic _animalLogic;
 
         public FieldLogic()
         {
+            _cellLogic = new CellLogic();
             _animalLogic = new AnimalLogic();
         }
 
-        public Field MakeField(List<Animal> animals)
+        public Field MakeField(Field field, List<Animal> animals)
         {
-            var field = new Field(ConstantValues.FieldDimensionX, ConstantValues.FieldDimensionY);
             for (int y = 0; y < ConstantValues.FieldDimensionY; y++)
             {
                 for (int x = 0; x < ConstantValues.FieldDimensionX; x++)
                 {
-                    var coordinates = new Coordinates(x, y);
-                    var animal = _animalLogic.GetAnimalByCoordinates(animals, coordinates);
-                    if (animal != null) 
+                    if (animals.Count == 0)
                     {
-                        var state = typeof(Antelope) == animal.GetType() ? State.Antelope : State.Lion;
-                        field.Cells[x, y] = new Cell() { Animal = animal, State = state };
+                        field.Cells[x, y] = new Cell() { State = State.Empty };
+                    }
+                    
+                    var coordinates = new Coordinates(x, y);
+                    var animal = _animalLogic.FindAnimalByCoordinates(animals, coordinates);
+                    if (animal != null)
+                    {
+                        var state = _cellLogic.DecideStateForCell(animal);
+                        field.Cells[x, y] = new Cell() { State = state };
                     }
                     else
                     {
@@ -37,7 +43,8 @@ namespace SavannaApp.Logic
                     }
                 }
             }
+
             return field;
-        }   
+        }
     }
 }

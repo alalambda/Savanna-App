@@ -16,11 +16,10 @@ namespace SavannaApp.Logic
             _random = new Random(Guid.NewGuid().GetHashCode());
         }
 
-        public Coordinates GenerateAnimalCoordinates()
+        public Coordinates GenerateRandomCoordinates(int from, int toExclusive)
         {
-            int x = _random.Next(0, ConstantValues.FieldDimensionX);
-            int y = _random.Next(0, ConstantValues.FieldDimensionY);
-
+            int x = _random.Next(from, toExclusive);
+            int y = _random.Next(from, toExclusive);
             return new Coordinates(x, y);
         }
     }
