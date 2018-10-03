@@ -11,6 +11,9 @@ namespace SavannaApp.Runner
 {
     public class GameRunner
     {
+        private readonly List<Animal> _animals;
+        private Field _field;
+
         private readonly IUserInterface _userInterface;
 
         private readonly IFieldLogic _fieldLogic;
@@ -19,6 +22,9 @@ namespace SavannaApp.Runner
 
         public GameRunner()
         {
+            _animals = new List<Animal>();
+            _field = new Field(ConstantValues.FieldDimensionX, ConstantValues.FieldDimensionY);
+
             _userInterface = new ConsoleUserInterface();
 
             _fieldLogic = new FieldLogic();
@@ -28,41 +34,42 @@ namespace SavannaApp.Runner
 
         public void Start()
         {
-            var field = new Field(ConstantValues.FieldDimensionX, ConstantValues.FieldDimensionY);
-            var animals = new List<Animal>();
             ConsoleKeyInfo? keyPressedInfo = null;
             do
             {
-                Console.Clear();
-                field = _fieldLogic.MakeField(field, animals);
-                _userInterface.PrintField(field);
+                RefreshField();
 
                 if (keyPressedInfo.HasValue)
                 {
-                    char animalChar = keyPressedInfo.Value.KeyChar;// _userInterface.GetAnimalChar();
+                    char animalChar = keyPressedInfo.Value.KeyChar;
                     if (animalChar != ConstantValues.Antelope && animalChar != ConstantValues.Lion)
                         continue;
 
                     var newAnimal = _animalLogic.CreateAnimal(animalChar);
                     if (newAnimal != null)
-                        animals.Add(newAnimal);
+                        _animals.Add(newAnimal);
                 }
 
-                while (Console.KeyAvailable == false && animals.Count != 0)
+                while (Console.KeyAvailable == false && _animals.Count != 0)
                 {
-                    foreach (var animal in animals)
+                    foreach (var animal in _animals)
                     {
-                        var coordinates = _coordinatesLogic.GetNewCoordinates(animal.Coordinates, field);
+                        var coordinates = _coordinatesLogic.GetNewCoordinates(animal.Coordinates, _field);
                         animal.Coordinates = coordinates;
                     }
                     Thread.Sleep(1000);
-                    Console.Clear();
-                    field = _fieldLogic.MakeField(field, animals);
-                    _userInterface.PrintField(field);
+                    RefreshField();
                 }
 
                 keyPressedInfo = Console.ReadKey(true);
             } while (keyPressedInfo.HasValue && keyPressedInfo.Value.Key != ConsoleKey.Escape);
+        }
+
+        private void RefreshField()
+        {
+            Console.Clear();
+            _field = _fieldLogic.MakeField(_field, _animals);
+            _userInterface.PrintField(_field);
         }
     }
 }
