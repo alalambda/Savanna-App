@@ -1,16 +1,11 @@
 ﻿using SavannaApp.Constants;
-using SavannaApp.Enum;
 using SavannaApp.Interfaces;
 using SavannaApp.Logic;
 using SavannaApp.Model;
 using SavannaApp.UserInterface;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace SavannaApp.Runner
 {
@@ -37,26 +32,22 @@ namespace SavannaApp.Runner
         {
             var field = new Field(ConstantValues.FieldDimensionX, ConstantValues.FieldDimensionY);
             var animals = new List<Animal>();
-
+            ConsoleKeyInfo? keyPressedInfo = null;
             do
             {
                 Console.Clear();
                 field = _fieldLogic.MakeField(field, animals);
                 _userInterface.PrintField(field);
 
-                char animalChar = _userInterface.GetAnimalChar();
-                if (animalChar != ConstantValues.Antelope && animalChar != ConstantValues.Lion)
+                if (keyPressedInfo.HasValue)
                 {
-                    continue;
-                }
-                var newAnimal = _animalLogic.CreateAnimal(animalChar);
-                if (newAnimal != null) animals.Add(newAnimal);
+                    char animalChar = keyPressedInfo.Value.KeyChar;// _userInterface.GetAnimalChar();
+                    if (animalChar != ConstantValues.Antelope && animalChar != ConstantValues.Lion)
+                        continue;
 
-                foreach (var animal in animals)
-                {
-                    var coordinates = 
-                        _coordinatesLogic.GenerateRandomCoordinates(0, ConstantValues.FieldDimensionX);
-                    animal.Coordinates = coordinates;
+                    var newAnimal = _animalLogic.CreateAnimal(animalChar);
+                    if (newAnimal != null)
+                        animals.Add(newAnimal);
                 }
 
                 while (Console.KeyAvailable == false && animals.Count != 0)
@@ -71,7 +62,9 @@ namespace SavannaApp.Runner
                     field = _fieldLogic.MakeField(field, animals);
                     _userInterface.PrintField(field);
                 }
-            } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
+
+                keyPressedInfo = Console.ReadKey(true);
+            } while (keyPressedInfo.HasValue && keyPressedInfo.Value.Key != ConsoleKey.Escape);
         }
     }
 }
