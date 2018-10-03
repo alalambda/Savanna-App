@@ -35,17 +35,12 @@ namespace SavannaApp.UserInterface
 
         public void EnterAnimalsMessage()
         {
-            Console.WriteLine("Enter animals. A - antelope, L - lion. End your input with 0.");
+            Console.WriteLine("Enter animals. A - antelope, L - lion.");
         }
 
         public char GetAnimalChar()
         {
-            ConsoleKeyInfo input = Console.ReadKey();
-            while (input.KeyChar != ConstantValues.Antelope && input.KeyChar != ConstantValues.Lion)
-            {
-                input = Console.ReadKey();
-            }
-            return input.KeyChar;
+            return Console.ReadKey(true).KeyChar;
         }
 
         private void InvalidInputMessage()

@@ -62,5 +62,10 @@ namespace SavannaApp.Logic
         {
             return animals.FindAll(x => typeof(Antelope) == x.GetType()).Count;
         }
+
+        public int CountLions(List<Animal> animals)
+        {
+            return animals.FindAll(x => typeof(Lion) == x.GetType()).Count;
+        }
     }
 }

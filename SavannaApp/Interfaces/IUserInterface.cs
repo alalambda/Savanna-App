@@ -9,6 +9,7 @@ namespace SavannaApp.Interfaces
     {
         void PrintField(Field field);
         char GetAnimalChar();
+        void EnterAnimalsMessage();
 
     }
 }

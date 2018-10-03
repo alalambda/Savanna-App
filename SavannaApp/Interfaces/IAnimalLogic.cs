@@ -10,5 +10,6 @@ namespace SavannaApp.Interfaces
         Coordinates MakeRandomMove(Coordinates currentCoordinates, Field field);
         Animal GetAnimalByCoordinates(List<Animal> animals, Coordinates coordinates);
         int CountAntelopes(List<Animal> animals);
+        int CountLions(List<Animal> animals);
     }
 }
