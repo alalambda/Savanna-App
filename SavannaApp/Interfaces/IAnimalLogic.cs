@@ -9,6 +9,5 @@ namespace SavannaApp.Interfaces
     {
         Animal FindAnimalByCoordinates(List<Animal> animals, Coordinates coordinates);
         Animal CreateAnimal(char animalChar);
-        int CountAnimalsByType(List<Animal> animals, Type animalType);
     }
 }

@@ -42,6 +42,7 @@ namespace SavannaApp.Runner
                 if (keyPressedInfo.HasValue)
                 {
                     char animalChar = keyPressedInfo.Value.KeyChar;
+                    // TODO: read non caps and caps
                     if (animalChar != ConstantValues.Antelope && animalChar != ConstantValues.Lion)
                         continue;
 

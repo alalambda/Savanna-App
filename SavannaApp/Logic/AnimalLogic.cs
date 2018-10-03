@@ -1,10 +1,7 @@
 ﻿using SavannaApp.Constants;
-using SavannaApp.Enum;
 using SavannaApp.Interfaces;
 using SavannaApp.Model;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SavannaApp.Logic
 {
@@ -27,12 +24,9 @@ namespace SavannaApp.Logic
 
         public Animal FindAnimalByCoordinates(List<Animal> animals, Coordinates coordinates)
         {
-            return animals.Find(x => x.Coordinates.Equals(coordinates));
-        }
-
-        public int CountAnimalsByType(List<Animal> animals, Type animalType)
-        {
-            return animals.FindAll(x => animalType == x.GetType()).Count;
+            if (coordinates == null)
+                return null;
+            return animals?.Find(x => x.Coordinates == coordinates);
         }
     }
 }
