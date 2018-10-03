@@ -14,7 +14,6 @@ namespace SavannaApp.Runner
         private readonly IUserInterface _userInterface;
 
         private readonly IFieldLogic _fieldLogic;
-        private readonly IMoveLogic _moveLogic;
         private readonly ICoordinatesLogic _coordinatesLogic;
         private readonly IAnimalLogic _animalLogic;
 
@@ -23,7 +22,6 @@ namespace SavannaApp.Runner
             _userInterface = new ConsoleUserInterface();
 
             _fieldLogic = new FieldLogic();
-            _moveLogic = new MoveLogic();
             _coordinatesLogic = new CoordinatesLogic();
             _animalLogic = new AnimalLogic();
         }
@@ -54,7 +52,7 @@ namespace SavannaApp.Runner
                 {
                     foreach (var animal in animals)
                     {
-                        var coordinates = _moveLogic.MakeRandomMove(animal.Coordinates, field);
+                        var coordinates = _coordinatesLogic.GetNewCoordinates(animal.Coordinates, field);
                         animal.Coordinates = coordinates;
                     }
                     Thread.Sleep(1000);

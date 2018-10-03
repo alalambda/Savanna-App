@@ -7,6 +7,6 @@ namespace SavannaApp.Interfaces
 {
     public interface ICoordinatesLogic
     {
-        Coordinates GenerateRandomCoordinates(int from, int toExclusive);
+        Coordinates GetNewCoordinates(Coordinates coordinates, Field field);
     }
 }
