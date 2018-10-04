@@ -77,5 +77,30 @@ namespace SavannaApp.Logic
 
             return new Coordinates(newX, newY);
         }
+
+        // there should be logic for animals to avoid/catch each other
+        public void MeaningfulMethodName(List<Animal> animals)
+        {
+            for (int y = 0; y < ConstantValues.FieldDimensionY; y++)
+            {
+                for (int x = 0; x < ConstantValues.FieldDimensionX; x++)
+                {
+                    var coordinates = new Coordinates(x, y);
+                    var animal = _animalLogic.FindAnimalByCoordinates(animals, coordinates);
+                    if (animal != null)
+                    {
+                        if (animal is Antelope antelope)
+                        {
+                            
+                        }
+                        else if (animal is Lion lion)
+                        {
+                            
+                        }
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
     }
 }
