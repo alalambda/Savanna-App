@@ -34,7 +34,7 @@ namespace SavannaApp.Logic
                     var animal = _animalLogic.FindAnimalByCoordinates(animals, coordinates);
                     if (animal != null)
                     {
-                        var state = _cellLogic.DecideStateForCell(animal);
+                        var state = _cellLogic.GetCellState(animal);
                         field.Cells[x, y] = new Cell() { State = state };
                     }
                     else

@@ -8,6 +8,6 @@ namespace SavannaApp.Interfaces
 {
     public interface ICellLogic
     {
-        State DecideStateForCell(Animal animal);
+        State GetCellState(Animal animal);
     }
 }

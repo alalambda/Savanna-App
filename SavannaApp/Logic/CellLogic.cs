@@ -9,7 +9,7 @@ namespace SavannaApp.Logic
 {
     public class CellLogic : ICellLogic
     {
-        public State DecideStateForCell(Animal animal)
+        public State GetCellState(Animal animal)
         {
             if (animal == null)
             {

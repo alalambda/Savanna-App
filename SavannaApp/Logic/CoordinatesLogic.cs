@@ -31,36 +31,48 @@ namespace SavannaApp.Logic
                 return GenerateRandomCoordinates(0, ConstantValues.FieldDimensionX);
             }
 
+            Coordinates newCoordinates = ApplyDifferenceOnCoordinates(currentCoordinates);
+
+            newCoordinates = AdjustCoordinates(newCoordinates);
+
+            if (field.Cells[newCoordinates.X, newCoordinates.Y].State != State.Empty)
+            {
+                return currentCoordinates;
+            }
+            return newCoordinates;
+        }
+
+        private Coordinates AdjustCoordinates(Coordinates newCoordinates)
+        {
+            newCoordinates.X = AdjustCoordinate(newCoordinates.X);
+            newCoordinates.Y = AdjustCoordinate(newCoordinates.Y);
+
+            return newCoordinates;
+        }
+
+        private int AdjustCoordinate(int coordinate)
+        {
+            if (coordinate < 0)
+            {
+                coordinate = 0;
+            }
+            else if (coordinate > ConstantValues.FieldDimensionX - 1)
+            {
+                coordinate = ConstantValues.FieldDimensionX - 1;
+            }
+            return coordinate;
+        }
+
+        private Coordinates ApplyDifferenceOnCoordinates(Coordinates currentCoordinates)
+        {
             var move = GenerateRandomCoordinates(-1, 2);
             while (move.X == 0 && move.Y == 0)
             {
                 move = GenerateRandomCoordinates(-1, 2);
             }
-
             int newX = currentCoordinates.X + move.X;
             int newY = currentCoordinates.Y + move.Y;
 
-            if (newX < 0)
-            {
-                newX = 0;
-            }
-            else if (newX > ConstantValues.FieldDimensionX - 1)
-            {
-                newX = ConstantValues.FieldDimensionX - 1;
-            }
-            if (newY < 0)
-            {
-                newY = 0;
-            }
-            else if (newY > ConstantValues.FieldDimensionY - 1)
-            {
-                newY = ConstantValues.FieldDimensionY - 1;
-            }
-
-            if (field.Cells[newX, newY].State != State.Empty)
-            {
-                return currentCoordinates;
-            }
             return new Coordinates(newX, newY);
         }
     }
