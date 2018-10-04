@@ -10,12 +10,10 @@ namespace SavannaApp.Logic
 {
     public class FieldLogic : IFieldLogic
     {
-        private readonly ICellLogic _cellLogic;
         private readonly IAnimalLogic _animalLogic;
 
         public FieldLogic()
         {
-            _cellLogic = new CellLogic();
             _animalLogic = new AnimalLogic();
         }
 
@@ -34,7 +32,7 @@ namespace SavannaApp.Logic
                     var animal = _animalLogic.FindAnimalByCoordinates(animals, coordinates);
                     if (animal != null)
                     {
-                        var state = _cellLogic.GetCellState(animal);
+                        var state = GetCellState(animal);
                         field.Cells[x, y] = new Cell() { State = state };
                     }
                     else
@@ -45,6 +43,16 @@ namespace SavannaApp.Logic
             }
 
             return field;
+        }
+
+        public State GetCellState(Animal animal)
+        {
+            if (animal == null)
+            {
+                return State.Empty;
+            }
+
+            return typeof(Antelope) == animal.GetType() ? State.Antelope : State.Lion;
         }
     }
 }

@@ -39,31 +39,38 @@ namespace SavannaApp.Runner
             {
                 RefreshField();
 
-                if (keyPressedInfo.HasValue)
-                {
-                    char animalChar = keyPressedInfo.Value.KeyChar;
-                    if (char.ToUpper(animalChar) != ConstantValues.Antelope 
-                        && char.ToUpper(animalChar) != ConstantValues.Lion)
-                        continue;
+                CharToAnimal(keyPressedInfo);
 
-                    var newAnimal = _animalLogic.CreateAnimal(animalChar);
-                    if (newAnimal != null)
-                        _animals.Add(newAnimal);
-                }
-
-                while (Console.KeyAvailable == false && _animals.Count != 0)
-                {
-                    foreach (var animal in _animals)
-                    {
-                        var coordinates = _coordinatesLogic.GetNewCoordinates(animal.Coordinates, _field);
-                        animal.Coordinates = coordinates;
-                    }
-                    Thread.Sleep(1000);
-                    RefreshField();
-                }
+                AssignCoordinates();
 
                 keyPressedInfo = Console.ReadKey(true);
+
             } while (keyPressedInfo.HasValue && keyPressedInfo.Value.Key != ConsoleKey.Escape);
+        }
+
+        private void CharToAnimal(ConsoleKeyInfo? keyPressedInfo)
+        {
+            if (keyPressedInfo.HasValue)
+            {
+                char animalChar = char.ToUpper(keyPressedInfo.Value.KeyChar);
+                var newAnimal = _animalLogic.CreateAnimal(animalChar);
+                if (newAnimal != null)
+                    _animals.Add(newAnimal);
+            }
+        }
+
+        private void AssignCoordinates()
+        {
+            while (Console.KeyAvailable == false && _animals.Count != 0)
+            {
+                foreach (var animal in _animals)
+                {
+                    var coordinates = _coordinatesLogic.GetNewCoordinates(animal.Coordinates, _field);
+                    animal.Coordinates = coordinates;
+                }
+                Thread.Sleep(1000);
+                RefreshField();
+            }
         }
 
         private void RefreshField()
