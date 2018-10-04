@@ -1,4 +1,5 @@
 ﻿using SavannaApp.Constants;
+using SavannaApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,5 @@ namespace SavannaApp.Model
     {
         public int VisionRange { get { return ConstantValues.VisionRange; } }
         public Coordinates Coordinates { get; set; }
-        public char Symbol { get; set; }
     }
 }

@@ -7,6 +7,6 @@ namespace SavannaApp.Model
 {
     public class Antelope : Animal
     {
-        public new char Symbol { get { return ConstantValues.Antelope;} }
+        public char Symbol => ConstantValues.Antelope;
     }
 }
