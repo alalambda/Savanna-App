@@ -1,5 +1,4 @@
 ﻿using SavannaApp.Constants;
-using SavannaApp.Enum;
 using SavannaApp.Interfaces;
 using SavannaApp.Model;
 using System;
@@ -12,9 +11,12 @@ namespace SavannaApp.Logic
     {
         private readonly Random _random;
 
+        private readonly IAnimalLogic _animalLogic;
+
         public CoordinatesLogic()
         {
             _random = new Random(Guid.NewGuid().GetHashCode());
+            _animalLogic = new AnimalLogic();
         }
 
         private Coordinates GenerateRandomCoordinates(int from, int toExclusive)
@@ -24,7 +26,7 @@ namespace SavannaApp.Logic
             return new Coordinates(x, y);
         }
 
-        public Coordinates GetNewCoordinates(Coordinates currentCoordinates, Field field)
+        public Coordinates GetNewCoordinates(List<Animal> animals, Coordinates currentCoordinates)
         {
             if (currentCoordinates == null)
             {
@@ -32,13 +34,13 @@ namespace SavannaApp.Logic
             }
 
             Coordinates newCoordinates = ApplyDifferenceOnCoordinates(currentCoordinates);
-
             newCoordinates = AdjustCoordinates(newCoordinates);
 
-            if (field.Cells[newCoordinates.X, newCoordinates.Y].State != State.Empty)
+            if (_animalLogic.FindAnimalByCoordinates(animals, newCoordinates) != null)
             {
                 return currentCoordinates;
             }
+
             return newCoordinates;
         }
 

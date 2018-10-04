@@ -9,8 +9,7 @@ namespace SavannaApp.Constants
         public const int FieldDimensionX = 20;
         public const int FieldDimensionY = 20;
 
-        public const int AntelopeVisionRange = 2;
-        public const int LionVisionRange = 2;
+        public const int VisionRange = 2;
 
         public const char Lion = 'L';
         public const char Antelope = 'A';

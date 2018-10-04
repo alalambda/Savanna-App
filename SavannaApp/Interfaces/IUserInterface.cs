@@ -7,7 +7,7 @@ namespace SavannaApp.Interfaces
 {
     public interface IUserInterface
     {
-        void PrintField(Field field);
+        void PrintField(List<Animal> animals);
         char GetAnimalChar();
         void EnterAnimalsMessage();
 

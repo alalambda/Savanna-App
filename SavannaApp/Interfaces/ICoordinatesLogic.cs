@@ -7,6 +7,6 @@ namespace SavannaApp.Interfaces
 {
     public interface ICoordinatesLogic
     {
-        Coordinates GetNewCoordinates(Coordinates coordinates, Field field);
+        Coordinates GetNewCoordinates(List<Animal> animals, Coordinates coordinates);
     }
 }

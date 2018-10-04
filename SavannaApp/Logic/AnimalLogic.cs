@@ -26,7 +26,7 @@ namespace SavannaApp.Logic
         {
             if (coordinates == null)
                 return null;
-            return animals?.Find(x => x.Coordinates.Equals(coordinates));
+            return animals?.Find(x => coordinates.Equals(x.Coordinates));
         }
     }
 }

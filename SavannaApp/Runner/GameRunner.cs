@@ -12,22 +12,18 @@ namespace SavannaApp.Runner
     public class GameRunner
     {
         private readonly List<Animal> _animals;
-        private Field _field;
 
         private readonly IUserInterface _userInterface;
 
-        private readonly IFieldLogic _fieldLogic;
         private readonly ICoordinatesLogic _coordinatesLogic;
         private readonly IAnimalLogic _animalLogic;
 
         public GameRunner()
         {
             _animals = new List<Animal>();
-            _field = new Field(ConstantValues.FieldDimensionX, ConstantValues.FieldDimensionY);
 
             _userInterface = new ConsoleUserInterface();
 
-            _fieldLogic = new FieldLogic();
             _coordinatesLogic = new CoordinatesLogic();
             _animalLogic = new AnimalLogic();
         }
@@ -65,7 +61,7 @@ namespace SavannaApp.Runner
             {
                 foreach (var animal in _animals)
                 {
-                    var coordinates = _coordinatesLogic.GetNewCoordinates(animal.Coordinates, _field);
+                    var coordinates = _coordinatesLogic.GetNewCoordinates(_animals, animal.Coordinates);
                     animal.Coordinates = coordinates;
                 }
                 Thread.Sleep(1000);
@@ -76,8 +72,7 @@ namespace SavannaApp.Runner
         private void RefreshField()
         {
             Console.Clear();
-            _field = _fieldLogic.GetNewField(_field, _animals);
-            _userInterface.PrintField(_field);
+            _userInterface.PrintField(_animals);
         }
     }
 }
