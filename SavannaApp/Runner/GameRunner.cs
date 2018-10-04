@@ -76,7 +76,7 @@ namespace SavannaApp.Runner
         private void RefreshField()
         {
             Console.Clear();
-            _field = _fieldLogic.MakeField(_field, _animals);
+            _field = _fieldLogic.GetNewField(_field, _animals);
             _userInterface.PrintField(_field);
         }
     }

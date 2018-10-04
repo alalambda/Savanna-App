@@ -17,7 +17,7 @@ namespace SavannaApp.Logic
             _animalLogic = new AnimalLogic();
         }
 
-        public Field MakeField(Field field, List<Animal> animals)
+        public Field GetNewField(Field field, List<Animal> animals)
         {
             for (int y = 0; y < ConstantValues.FieldDimensionY; y++)
             {
@@ -27,17 +27,13 @@ namespace SavannaApp.Logic
                     {
                         field.Cells[x, y] = new Cell() { State = State.Empty };
                     }
-                    
-                    var coordinates = new Coordinates(x, y);
-                    var animal = _animalLogic.FindAnimalByCoordinates(animals, coordinates);
-                    if (animal != null)
-                    {
-                        var state = GetCellState(animal);
-                        field.Cells[x, y] = new Cell() { State = state };
-                    }
                     else
                     {
-                        field.Cells[x, y] = new Cell() { State = State.Empty };
+                        var coordinates = new Coordinates(x, y);
+                        var animal = _animalLogic.FindAnimalByCoordinates(animals, coordinates);
+
+                        var state = GetCellState(animal);
+                        field.Cells[x, y] = new Cell() { State = state };
                     }
                 }
             }
