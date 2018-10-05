@@ -61,7 +61,7 @@ namespace SavannaApp.Runner
             {
                 foreach (var animal in _animals)
                 {
-                    var coordinates = _coordinatesLogic.GetNewCoordinates(_animals, animal.Coordinates);
+                    var coordinates = _coordinatesLogic.Move(animal, _animals);
                     animal.Coordinates = coordinates;
                 }
                 Thread.Sleep(1000);

@@ -7,6 +7,6 @@ namespace SavannaApp.Model
 {
     public class Lion : Animal 
     {
-        public char Symbol => ConstantValues.Lion;
+        new public char Symbol => ConstantValues.Lion;
     }
 }

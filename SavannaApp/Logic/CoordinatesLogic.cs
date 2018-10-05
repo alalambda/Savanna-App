@@ -26,7 +26,7 @@ namespace SavannaApp.Logic
             return new Coordinates(x, y);
         }
 
-        public Coordinates GetNewCoordinates(List<Animal> animals, Coordinates currentCoordinates)
+        private Coordinates GetNewRandomCoordinates(List<Animal> animals, Coordinates currentCoordinates)
         {
             if (currentCoordinates == null)
             {
@@ -78,29 +78,114 @@ namespace SavannaApp.Logic
             return new Coordinates(newX, newY);
         }
 
-        // there should be logic for animals to avoid/catch each other
-        public void MeaningfulMethodName(List<Animal> animals)
+        private int GetDirectionForCoordinate(int carnivoreCoordinate, int predatorCoordinate)
         {
-            for (int y = 0; y < ConstantValues.FieldDimensionY; y++)
+            if (carnivoreCoordinate - predatorCoordinate < 0)
             {
-                for (int x = 0; x < ConstantValues.FieldDimensionX; x++)
+                return -1;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+
+        private Coordinates GetDirection(Antelope antelope, Lion lion)
+        {
+            int x = GetDirectionForCoordinate(antelope.Coordinates.X, lion.Coordinates.X);
+            int y = GetDirectionForCoordinate(antelope.Coordinates.Y, lion.Coordinates.Y);
+
+            return new Coordinates(x, y);
+        }
+
+        private List<Coordinates> GetForbiddenCoordinates(Animal animal, List<Animal> animals)
+        {
+            int forbiddenX = 0;
+            int forbiddenY = 0;
+            var forbiddenCoordinates = new List<Coordinates>();
+            foreach (var detectedAnimal in animals)
+            {
+                forbiddenX = GetForbiddenCoordinate(animal.Coordinates.X, detectedAnimal.Coordinates.X);
+                forbiddenY = GetForbiddenCoordinate(animal.Coordinates.Y, detectedAnimal.Coordinates.Y);
+                Coordinates forbiddenCoordinate = new Coordinates(forbiddenX, forbiddenY);
+                forbiddenCoordinates.Add(forbiddenCoordinate);
+            }
+            return forbiddenCoordinates;
+        }
+
+        private int GetForbiddenCoordinate(int animalCoordinate, int detectedAnimalCoordinate)
+        {
+            if (animalCoordinate > detectedAnimalCoordinate)
+            {
+                return -1;
+            }
+            else if (animalCoordinate < detectedAnimalCoordinate)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        private List<Animal> GetAnimalsInVisionRange(Animal animal, List<Animal> animals)
+        {
+            int xFrom = AdjustCoordinate(animal.Coordinates.X - animal.VisionRange);
+            int yFrom = AdjustCoordinate(animal.Coordinates.Y - animal.VisionRange);
+            int xTo = AdjustCoordinate(animal.Coordinates.X + animal.VisionRange);
+            int yTo = AdjustCoordinate(animal.Coordinates.Y + animal.VisionRange);
+
+            var detectedAnimals = new List<Animal>();
+            for (int y = yFrom; y < yTo; y++)
+            {
+                for (int x = xFrom; x < xTo; x++)
                 {
                     var coordinates = new Coordinates(x, y);
-                    var animal = _animalLogic.FindAnimalByCoordinates(animals, coordinates);
-                    if (animal != null)
+                    if (!coordinates.Equals(animal.Coordinates))
                     {
-                        if (animal is Antelope antelope)
+                        var foundAnimal = _animalLogic.FindAnimalByCoordinates(animals, coordinates);
+                        if (foundAnimal != null && animal.GetType() != foundAnimal.GetType())
                         {
-                            
-                        }
-                        else if (animal is Lion lion)
-                        {
-                            
+                            detectedAnimals.Add(foundAnimal);
                         }
                     }
                 }
-                Console.WriteLine();
             }
+
+            return detectedAnimals;
+        }
+
+        public Coordinates Move(Animal animal, List<Animal> animals)
+        {
+            if (animal.Coordinates == null)
+            {
+                return GetNewRandomCoordinates(animals, animal.Coordinates);
+            }
+            List<Animal> animalsInVisionRange = GetAnimalsInVisionRange(animal, animals);
+
+            List<Coordinates> forbiddenCoordinates = GetForbiddenCoordinates(animal, animals);
+
+            Coordinates coordinates = GetNewRandomCoordinates(animals, animal.Coordinates);
+            if (animalsInVisionRange.Count != 0 && forbiddenCoordinates.Count != 0)
+            {
+                if (animal is Antelope)
+                {
+                    while (forbiddenCoordinates.Find(x => coordinates.Equals(x)) != null)
+                    {
+                        coordinates = GetNewRandomCoordinates(animals, animal.Coordinates);
+                    }
+                }
+                else
+                {
+                    while (forbiddenCoordinates.Find(x => coordinates.Equals(x)) == null)
+                    {
+                        coordinates = GetNewRandomCoordinates(animals, animal.Coordinates);
+                    }
+                }
+            }
+           
+            return coordinates;
         }
     }
 }
