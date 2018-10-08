@@ -164,7 +164,11 @@ namespace SavannaApp.Logic
             }
             List<Animal> animalsInVisionRange = GetAnimalsInVisionRange(animal, animals);
 
-            List<Coordinates> forbiddenCoordinates = GetForbiddenCoordinates(animal, animals);
+            var forbiddenCoordinates = new List<Coordinates>();
+            if (animals.Count > 1)
+            {
+                forbiddenCoordinates = GetForbiddenCoordinates(animal, animals);
+            }
 
             Coordinates coordinates = GetNewRandomCoordinates(animals, animal.Coordinates);
             if (animalsInVisionRange.Count != 0 && forbiddenCoordinates.Count != 0)
@@ -184,7 +188,7 @@ namespace SavannaApp.Logic
                     }
                 }
             }
-           
+
             return coordinates;
         }
     }

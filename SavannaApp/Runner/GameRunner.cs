@@ -59,11 +59,12 @@ namespace SavannaApp.Runner
         {
             while (Console.KeyAvailable == false && _animals.Count != 0)
             {
+                _animals.Reverse();
                 foreach (var animal in _animals)
                 {
-                    var coordinates = _coordinatesLogic.Move(animal, _animals);
-                    animal.Coordinates = coordinates;
+                    animal.Coordinates = _coordinatesLogic.Move(animal, _animals);
                 }
+                _animals.Reverse();
                 Thread.Sleep(1000);
                 RefreshField();
             }
