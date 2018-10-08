@@ -17,7 +17,7 @@ namespace SavannaApp.UserInterface
             _animalLogic = new AnimalLogic();
         }
 
-        public void PrintField(List<Animal> animals)
+        public void PrintField(List<IAnimal> animals)
         {
             for (int y = 0; y < ConstantValues.FieldDimensionY; y++)
             {

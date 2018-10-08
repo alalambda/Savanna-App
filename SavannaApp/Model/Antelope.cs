@@ -1,12 +1,16 @@
 ﻿using SavannaApp.Constants;
+using SavannaApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SavannaApp.Model
 {
-    public class Antelope : Animal
+    public class Antelope : IAnimal
     {
-        new public char Symbol => ConstantValues.Antelope;
+        public decimal Health { get; set; } = ConstantValues.Health;
+        public int VisionRange { get; set; } = ConstantValues.VisionRange;
+        public Coordinates Coordinates { get; set; }
+        public char Symbol { get; set; } = 'A';
     }
 }

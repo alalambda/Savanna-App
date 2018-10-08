@@ -26,7 +26,7 @@ namespace SavannaApp.Logic
             return new Coordinates(x, y);
         }
 
-        private Coordinates GetNewRandomCoordinates(List<Animal> animals, Animal animal)
+        private Coordinates GetNewRandomCoordinates(List<IAnimal> animals, IAnimal animal)
         {
             if (animal.Coordinates == null)
             {
@@ -90,7 +90,7 @@ namespace SavannaApp.Logic
             }
         }
 
-        private List<Coordinates> GetDirections(Animal animal, List<Animal> animalsInVisionRange)
+        private List<Coordinates> GetDirections(IAnimal animal, List<IAnimal> animalsInVisionRange)
         {
             var directions = new List<Coordinates>();
             foreach (var animalInVisionRange in animalsInVisionRange)
@@ -117,7 +117,7 @@ namespace SavannaApp.Logic
             return new Coordinates(x, y);
         }
 
-        private List<Coordinates> GetForbiddenCoordinates(Animal animal, List<Animal> animals)
+        private List<Coordinates> GetForbiddenCoordinates(IAnimal animal, List<IAnimal> animals)
         {
             int forbiddenX = 0;
             int forbiddenY = 0;
@@ -148,14 +148,14 @@ namespace SavannaApp.Logic
             }
         }
 
-        private List<Animal> GetAnimalsInVisionRange(Animal animal, List<Animal> animals)
+        private List<IAnimal> GetAnimalsInVisionRange(IAnimal animal, List<IAnimal> animals)
         {
             int xFrom = AdjustCoordinate(animal.Coordinates.X - animal.VisionRange);
             int yFrom = AdjustCoordinate(animal.Coordinates.Y - animal.VisionRange);
             int xTo = AdjustCoordinate(animal.Coordinates.X + animal.VisionRange);
             int yTo = AdjustCoordinate(animal.Coordinates.Y + animal.VisionRange);
 
-            var detectedAnimals = new List<Animal>();
+            var detectedAnimals = new List<IAnimal>();
             for (int y = yFrom; y < yTo; y++)
             {
                 for (int x = xFrom; x < xTo; x++)
@@ -175,14 +175,14 @@ namespace SavannaApp.Logic
             return detectedAnimals;
         }
 
-        public Coordinates Move(Animal animal, List<Animal> animals)
+        public Coordinates Move(IAnimal animal, List<IAnimal> animals)
         {
             if (animal.Coordinates == null)
             {
                 return GetNewRandomCoordinates(animals, animal);
             }
 
-            var animalsInVisionRange = new List<Animal>();
+            var animalsInVisionRange = new List<IAnimal>();
             if (animals.Count > 1)
             {
                 animalsInVisionRange = GetAnimalsInVisionRange(animal, animals);
@@ -218,7 +218,7 @@ namespace SavannaApp.Logic
 
         //}
 
-        private Coordinates GetNeededDirection(Animal animal, 
+        private Coordinates GetNeededDirection(IAnimal animal, 
             List<Coordinates> directions, List<Coordinates> forbiddenCoordinates)
         {
             var neededDirection = new Coordinates(0, 0);

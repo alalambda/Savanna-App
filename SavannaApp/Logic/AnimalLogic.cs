@@ -7,9 +7,9 @@ namespace SavannaApp.Logic
 {
     public class AnimalLogic : IAnimalLogic
     {
-        public Animal CreateAnimal(char animalChar)
+        public IAnimal CreateAnimal(char animalChar)
         {
-            Animal animal = null;
+            IAnimal animal = null;
             if (animalChar == ConstantValues.Antelope)
             {
                 animal = new Antelope();
@@ -22,14 +22,14 @@ namespace SavannaApp.Logic
             return animal;
         }
 
-        public Animal FindAnimalByCoordinates(List<Animal> animals, Coordinates coordinates)
+        public IAnimal FindAnimalByCoordinates(List<IAnimal> animals, Coordinates coordinates)
         {
             if (coordinates == null)
                 return null;
             return animals?.Find(x => coordinates.Equals(x.Coordinates));
         }
 
-        public decimal DecreaseHealth(Animal animal)
+        public decimal DecreaseHealth(IAnimal animal)
         {
             decimal health = animal.Health - ConstantValues.HealthDecrease;
             if (health < 0)
@@ -40,7 +40,7 @@ namespace SavannaApp.Logic
             return health;
         }
 
-        public List<Animal> Die(Animal animal, List<Animal> animals)
+        public List<IAnimal> Die(IAnimal animal, List<IAnimal> animals)
         {
             if (animal.Health == 0)
             {

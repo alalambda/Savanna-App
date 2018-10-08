@@ -11,7 +11,7 @@ namespace SavannaApp.Runner
 {
     public class GameRunner
     {
-        private readonly List<Animal> _animals;
+        private readonly List<IAnimal> _animals;
 
         private readonly IUserInterface _userInterface;
 
@@ -20,7 +20,7 @@ namespace SavannaApp.Runner
 
         public GameRunner()
         {
-            _animals = new List<Animal>();
+            _animals = new List<IAnimal>();
 
             _userInterface = new ConsoleUserInterface();
 
