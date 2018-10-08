@@ -28,5 +28,25 @@ namespace SavannaApp.Logic
                 return null;
             return animals?.Find(x => coordinates.Equals(x.Coordinates));
         }
+
+        public decimal DecreaseHealth(Animal animal)
+        {
+            decimal health = animal.Health - ConstantValues.HealthDecrease;
+            if (health < 0)
+            {
+                health = 0;
+            }
+
+            return health;
+        }
+
+        public List<Animal> Die(Animal animal, List<Animal> animals)
+        {
+            if (animal.Health == 0)
+            {
+                animals.Remove(animal);
+            }
+            return animals;
+        }
     }
 }

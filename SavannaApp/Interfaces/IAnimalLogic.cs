@@ -9,5 +9,7 @@ namespace SavannaApp.Interfaces
     {
         Animal FindAnimalByCoordinates(List<Animal> animals, Coordinates coordinates);
         Animal CreateAnimal(char animalChar);
+        decimal DecreaseHealth(Animal animal);
+        List<Animal> Die(Animal animal, List<Animal> animals);
     }
 }

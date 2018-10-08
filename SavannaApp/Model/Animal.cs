@@ -7,6 +7,7 @@ namespace SavannaApp.Model
 {
     public class Animal
     {
+        public decimal Health { get { return ConstantValues.Health; } }
         public int VisionRange { get { return ConstantValues.VisionRange; } }
         public Coordinates Coordinates { get; set; }
         public char Symbol { get; set; }

@@ -26,19 +26,19 @@ namespace SavannaApp.Logic
             return new Coordinates(x, y);
         }
 
-        private Coordinates GetNewRandomCoordinates(List<Animal> animals, Coordinates currentCoordinates)
+        private Coordinates GetNewRandomCoordinates(List<Animal> animals, Animal animal)
         {
-            if (currentCoordinates == null)
+            if (animal.Coordinates == null)
             {
                 return GenerateRandomCoordinates(0, ConstantValues.FieldDimensionX);
             }
 
-            Coordinates newCoordinates = ApplyDifferenceOnCoordinates(currentCoordinates);
+            Coordinates newCoordinates = ApplyDifferenceOnCoordinates(animal.Coordinates);
             newCoordinates = AdjustCoordinates(newCoordinates);
 
             if (_animalLogic.FindAnimalByCoordinates(animals, newCoordinates) != null)
             {
-                return currentCoordinates;
+                return animal.Coordinates;
             }
 
             return newCoordinates;
@@ -88,6 +88,25 @@ namespace SavannaApp.Logic
             {
                 return 1;
             }
+        }
+
+        private List<Coordinates> GetDirections(Animal animal, List<Animal> animalsInVisionRange)
+        {
+            var directions = new List<Coordinates>();
+            foreach (var animalInVisionRange in animalsInVisionRange)
+            {
+                Coordinates direction;
+                if (animal is Antelope antelope && animalInVisionRange is Lion lion)
+                {
+                    direction = GetDirection(antelope, lion);
+                }
+                else
+                {
+                    direction = GetDirection(animalInVisionRange as Antelope, animal as Lion);
+                }
+                directions.Add(direction);
+            }
+            return directions;
         }
 
         private Coordinates GetDirection(Antelope antelope, Lion lion)
@@ -160,36 +179,65 @@ namespace SavannaApp.Logic
         {
             if (animal.Coordinates == null)
             {
-                return GetNewRandomCoordinates(animals, animal.Coordinates);
+                return GetNewRandomCoordinates(animals, animal);
             }
-            List<Animal> animalsInVisionRange = GetAnimalsInVisionRange(animal, animals);
 
-            var forbiddenCoordinates = new List<Coordinates>();
+            var animalsInVisionRange = new List<Animal>();
             if (animals.Count > 1)
             {
-                forbiddenCoordinates = GetForbiddenCoordinates(animal, animals);
+                animalsInVisionRange = GetAnimalsInVisionRange(animal, animals);
             }
-
-            Coordinates coordinates = GetNewRandomCoordinates(animals, animal.Coordinates);
-            if (animalsInVisionRange.Count != 0 && forbiddenCoordinates.Count != 0)
+            
+            var forbiddenCoordinates = new List<Coordinates>();
+            if (animalsInVisionRange.Count > 0)
             {
-                if (animal is Antelope)
+                forbiddenCoordinates = GetForbiddenCoordinates(animal, animalsInVisionRange);
+            }
+
+            if (animals.Count > 1 && animalsInVisionRange.Count > 0 && forbiddenCoordinates.Count > 0)
+            {
+                var directions = GetDirections(animal, animalsInVisionRange);
+                Coordinates neededDirection = GetNeededDirection(animal, directions, forbiddenCoordinates);
+                int x = animal.Coordinates.X + neededDirection.X;
+                int y = animal.Coordinates.Y + neededDirection.Y;
+                var neededCoordinates = new Coordinates(x, y);
+                neededCoordinates = AdjustCoordinates(neededCoordinates);
+                return neededCoordinates;
+            }
+
+            return GetNewRandomCoordinates(animals, animal);
+        }
+
+        //private Animal CatchCarnivore(Animal predator, Animal carnivore)
+        //{
+
+        //}
+
+        //private Animal EatCarnivore(Animal predator, Animal carnivore)
+        //{
+
+        //}
+
+        private Coordinates GetNeededDirection(Animal animal, 
+            List<Coordinates> directions, List<Coordinates> forbiddenCoordinates)
+        {
+            var neededDirection = new Coordinates(0, 0);
+            if (animal is Lion)
+            {
+                int index = _random.Next(0, directions.Count);
+                neededDirection = forbiddenCoordinates[index];
+            }
+            else
+            {
+                neededDirection = GenerateRandomCoordinates(-1, 2);
+                while (forbiddenCoordinates.Find(f => neededDirection.Equals(f)) != null
+                    && neededDirection.X == 0 && neededDirection.Y == 0)
                 {
-                    while (forbiddenCoordinates.Find(x => coordinates.Equals(x)) != null)
-                    {
-                        coordinates = GetNewRandomCoordinates(animals, animal.Coordinates);
-                    }
-                }
-                else
-                {
-                    while (forbiddenCoordinates.Find(x => coordinates.Equals(x)) == null)
-                    {
-                        coordinates = GetNewRandomCoordinates(animals, animal.Coordinates);
-                    }
+                    neededDirection = GenerateRandomCoordinates(-1, 2);
                 }
             }
 
-            return coordinates;
+            return neededDirection;
         }
     }
 }
