@@ -1,7 +1,6 @@
-﻿using SavannaApp.Constants;
+﻿using SavannaApp.Factory;
 using SavannaApp.Interfaces;
 using SavannaApp.Logic;
-using SavannaApp.Model;
 using SavannaApp.UserInterface;
 using System;
 using System.Collections.Generic;
@@ -11,6 +10,8 @@ namespace SavannaApp.Runner
 {
     public class GameRunner
     {
+        private readonly AnimalFactory _animalFactory;
+
         private readonly List<IAnimal> _animals;
 
         private readonly IUserInterface _userInterface;
@@ -20,6 +21,8 @@ namespace SavannaApp.Runner
 
         public GameRunner()
         {
+            _animalFactory = new AnimalFactory();
+
             _animals = new List<IAnimal>();
 
             _userInterface = new ConsoleUserInterface();
@@ -49,7 +52,7 @@ namespace SavannaApp.Runner
             if (keyPressedInfo.HasValue)
             {
                 char animalChar = char.ToUpper(keyPressedInfo.Value.KeyChar);
-                var newAnimal = _animalLogic.CreateAnimal(animalChar);
+                var newAnimal = _animalFactory.CreateAnimal(animalChar);
                 if (newAnimal != null)
                     _animals.Add(newAnimal);
             }

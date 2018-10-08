@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SavannaApp.Model
 {
-    public class Antelope : IAnimal
+    public class Antelope : Carnivore, IAnimal
     {
         public decimal Health { get; set; } = ConstantValues.Health;
         public int VisionRange { get; set; } = ConstantValues.VisionRange;

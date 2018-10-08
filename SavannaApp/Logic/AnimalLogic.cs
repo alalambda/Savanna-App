@@ -7,21 +7,6 @@ namespace SavannaApp.Logic
 {
     public class AnimalLogic : IAnimalLogic
     {
-        public IAnimal CreateAnimal(char animalChar)
-        {
-            IAnimal animal = null;
-            if (animalChar == ConstantValues.Antelope)
-            {
-                animal = new Antelope();
-            }
-            else if (animalChar == ConstantValues.Lion)
-            {
-                animal = new Lion();
-            }
-
-            return animal;
-        }
-
         public IAnimal FindAnimalByCoordinates(List<IAnimal> animals, Coordinates coordinates)
         {
             if (coordinates == null)
