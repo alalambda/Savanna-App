@@ -19,6 +19,7 @@ namespace SavannaApp.UserInterface
 
         public void PrintField(List<IAnimal> animals)
         {
+            var stringToPrintOut = "";
             for (int y = 0; y < ConstantValues.FieldDimensionY; y++)
             {
                 for (int x = 0; x < ConstantValues.FieldDimensionX; x++)
@@ -29,20 +30,21 @@ namespace SavannaApp.UserInterface
                     {
                         if (animal is Antelope antelope)
                         {
-                            Console.Write($"{antelope.Symbol} ");
+                            stringToPrintOut += $"{antelope.Symbol} ";
                         }
                         else if (animal is Lion lion)
                         {
-                            Console.Write($"{lion.Symbol} ");
+                            stringToPrintOut += $"{lion.Symbol} ";
                         }
                     }
                     else
                     {
-                        Console.Write($"{ConstantValues.Empty} ");
+                        stringToPrintOut += $"{ConstantValues.Empty} ";
                     }
                 }
-                Console.WriteLine();
+                stringToPrintOut += "\r\n";
             }
+            Console.Write(stringToPrintOut);
         }
 
         public void EnterAnimalsMessage()

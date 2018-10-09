@@ -2,16 +2,18 @@
 using SavannaApp.Interfaces;
 using SavannaApp.Model;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SavannaApp.Logic
 {
     public class AnimalLogic : IAnimalLogic
     {
-        public IAnimal FindAnimalByCoordinates(List<IAnimal> animals, Coordinates coordinates)
+        public IAnimal FindAnimalByCoordinates(IEnumerable<IAnimal> animals, Coordinates coordinates)
         {
             if (coordinates == null)
                 return null;
-            return animals?.Find(x => coordinates.Equals(x.Coordinates));
+
+            return animals?.Where(x => coordinates.Equals(x.Coordinates)).FirstOrDefault();
         }
 
         public decimal DecreaseHealth(IAnimal animal)
@@ -25,11 +27,11 @@ namespace SavannaApp.Logic
             return health;
         }
 
-        public List<IAnimal> Die(IAnimal animal, List<IAnimal> animals)
+        public IEnumerable<IAnimal> Die(IAnimal animal, IEnumerable<IAnimal> animals)
         {
             if (animal.Health == 0)
             {
-                animals.Remove(animal);
+                animals.Where(x => x != animal);
             }
             return animals;
         }

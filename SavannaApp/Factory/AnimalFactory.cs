@@ -14,7 +14,7 @@ namespace SavannaApp.Factory
                 case 'L':
                     return new Lion();
                 default:
-                    return new Antelope();
+                    return null;
             }
         }
     }

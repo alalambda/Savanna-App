@@ -1,9 +1,12 @@
-﻿using SavannaApp.Factory;
+﻿using Newtonsoft.Json;
+using SavannaApp.Factory;
 using SavannaApp.Interfaces;
 using SavannaApp.Logic;
+using SavannaApp.Model;
 using SavannaApp.UserInterface;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace SavannaApp.Runner
@@ -16,19 +19,15 @@ namespace SavannaApp.Runner
 
         private readonly IUserInterface _userInterface;
 
-        private readonly ICoordinatesLogic _coordinatesLogic;
-        private readonly IAnimalLogic _animalLogic;
+        private readonly IMovementLogic _movementLogic;
 
         public GameRunner()
         {
             _animalFactory = new AnimalFactory();
-
             _animals = new List<IAnimal>();
 
             _userInterface = new ConsoleUserInterface();
-
-            _coordinatesLogic = new CoordinatesLogic();
-            _animalLogic = new AnimalLogic();
+            _movementLogic = new MovementLogic();
         }
 
         public void Start()
@@ -38,37 +37,52 @@ namespace SavannaApp.Runner
             {
                 RefreshField();
 
-                CharToAnimal(keyPressedInfo);
+                var animal = CreateAnimal(keyPressedInfo);
+                if (animal != null)
+                {
+                    _animals.Add(animal);
+                    _movementLogic.Spawn(animal, _animals);
+                }
 
-                AssignCoordinates();
+                while (Console.KeyAvailable == false && _animals.Any())
+                {
+                    MoveCarnivores();
+                    Thread.Sleep(400);
+
+                    MovePredators();
+                    Thread.Sleep(700);
+                }
 
                 keyPressedInfo = Console.ReadKey(true);
 
             } while (keyPressedInfo.HasValue && keyPressedInfo.Value.Key != ConsoleKey.Escape);
         }
 
-        private void CharToAnimal(ConsoleKeyInfo? keyPressedInfo)
+        private void MovePredators()
         {
-            if (keyPressedInfo.HasValue)
+            foreach (var predator in _animals.Where(a => a.IsPredator))
             {
-                char animalChar = char.ToUpper(keyPressedInfo.Value.KeyChar);
-                var newAnimal = _animalFactory.CreateAnimal(animalChar);
-                if (newAnimal != null)
-                    _animals.Add(newAnimal);
+                _movementLogic.Move(predator, _animals);
+                RefreshField();
             }
         }
 
-        private void AssignCoordinates()
+        private void MoveCarnivores()
         {
-            while (Console.KeyAvailable == false && _animals.Count != 0)
+            foreach (var carnivore in _animals.Where(a => !a.IsPredator))
             {
-                foreach (var animal in _animals)
-                {
-                    animal.Coordinates = _coordinatesLogic.Move(animal, _animals);
-                }
-                Thread.Sleep(1000);
+                _movementLogic.Move(carnivore, _animals);
                 RefreshField();
             }
+        }
+
+        private IAnimal CreateAnimal(ConsoleKeyInfo? keyPressedInfo)
+        {
+            if (!keyPressedInfo.HasValue)
+                return null;
+
+            var animalChar = char.ToUpper(keyPressedInfo.Value.KeyChar);
+            return _animalFactory.CreateAnimal(animalChar);
         }
 
         private void RefreshField()

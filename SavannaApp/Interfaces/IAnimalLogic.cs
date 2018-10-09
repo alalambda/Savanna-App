@@ -7,8 +7,8 @@ namespace SavannaApp.Interfaces
 {
     public interface IAnimalLogic
     {
-        IAnimal FindAnimalByCoordinates(List<IAnimal> animals, Coordinates coordinates);
+        IAnimal FindAnimalByCoordinates(IEnumerable<IAnimal> animals, Coordinates coordinates);
         decimal DecreaseHealth(IAnimal animal);
-        List<IAnimal> Die(IAnimal animal, List<IAnimal> animals);
+        IEnumerable<IAnimal> Die(IAnimal animal, IEnumerable<IAnimal> animals);
     }
 }

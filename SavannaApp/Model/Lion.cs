@@ -1,16 +1,16 @@
 ﻿using SavannaApp.Constants;
-using SavannaApp.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SavannaApp.Model
 {
-    public class Lion : IAnimal 
+    public class Lion : Animal
     {
-        public decimal Health { get; set; } = ConstantValues.Health;
-        public int VisionRange { get; set; } = ConstantValues.VisionRange;
-        public Coordinates Coordinates { get; set; }
-        public char Symbol { get; set; } = 'L';
+        public Lion()
+        {
+            Health = ConstantValues.Health;
+            VisionRange = ConstantValues.VisionRange;
+            Symbol = 'L';
+        }
+
+        public override bool IsPredator => true;
     }
 }
