@@ -26,24 +26,6 @@ namespace SavannaApp.Logic
             return new Coordinates(x, y);
         }
 
-        //private Coordinates GetNewRandomCoordinates(List<IAnimal> animals, IAnimal animal)
-        //{
-        //    if (animal.Coordinates == null)
-        //    {
-        //        return GenerateRandomCoordinates(0, ConstantValues.FieldDimensionX);
-        //    }
-
-        //    Coordinates newCoordinates = ApplyDifferenceOnCoordinates(animal.Coordinates);
-        //    newCoordinates = AdjustCoordinates(newCoordinates);
-
-        //    if (_animalLogic.FindAnimalByCoordinates(animals, newCoordinates) != null)
-        //    {
-        //        return animal.Coordinates;
-        //    }
-
-        //    return newCoordinates;
-        //}
-
         private Coordinates AdjustCoordinates(Coordinates newCoordinates)
         {
             newCoordinates.X = AdjustCoordinate(newCoordinates.X);
@@ -87,67 +69,29 @@ namespace SavannaApp.Logic
             return newCoordinates;
         }
 
-        //private int GetDirectionForCoordinate(int carnivoreCoordinate, int predatorCoordinate)
-        //{
-        //    if (carnivoreCoordinate - predatorCoordinate < 0)
-        //    {
-        //        return -1;
-        //    }
-        //    else
-        //    {
-        //        return 1;
-        //    }
-        //}
-
-        //private List<Coordinates> GetDirections(IAnimal animal, List<IAnimal> animalsInVisionRange)
-        //{
-        //    var directions = new List<Coordinates>();
-        //    foreach (var animalInVisionRange in animalsInVisionRange)
-        //    {
-        //        Coordinates direction;
-        //        if (animal is Antelope antelope && animalInVisionRange is Lion lion)
-        //        {
-        //            direction = GetDirection(antelope, lion);
-        //        }
-        //        else
-        //        {
-        //            direction = GetDirection(animalInVisionRange as Antelope, animal as Lion);
-        //        }
-        //        directions.Add(direction);
-        //    }
-        //    return directions;
-        //}
-
-        //private Coordinates GetDirection(Antelope antelope, Lion lion)
-        //{
-        //    int x = GetDirectionForCoordinate(antelope.Coordinates.X, lion.Coordinates.X);
-        //    int y = GetDirectionForCoordinate(antelope.Coordinates.Y, lion.Coordinates.Y);
-
-        //    return new Coordinates(x, y);
-        //}
-
-        private List<Coordinates> GetForbiddenCoordinates(IAnimal animal, List<IAnimal> animals)
+        private IEnumerable<Coordinates> GetDirectionsToAnimals
+            (IAnimal animal, IEnumerable<Coordinates> animalsCoordinates)
         {
-            int forbiddenX = 0;
-            int forbiddenY = 0;
-            var forbiddenCoordinates = new List<Coordinates>();
-            foreach (var detectedAnimal in animals)
+            int x = 0;
+            int y = 0;
+            var directionsToAnimals = new List<Coordinates>();
+            foreach (var predatorCoordinates in animalsCoordinates)
             {
-                forbiddenX = GetForbiddenCoordinate(animal.Coordinates.X, detectedAnimal.Coordinates.X);
-                forbiddenY = GetForbiddenCoordinate(animal.Coordinates.Y, detectedAnimal.Coordinates.Y);
-                Coordinates forbiddenCoordinate = new Coordinates(forbiddenX, forbiddenY);
-                forbiddenCoordinates.Add(forbiddenCoordinate);
+                x = GetDirectionToAnimal(animal.Coordinates.X, predatorCoordinates.X);
+                y = GetDirectionToAnimal(animal.Coordinates.Y, predatorCoordinates.Y);
+                Coordinates directionToAnimal = new Coordinates(x, y);
+                directionsToAnimals.Add(directionToAnimal);
             }
-            return forbiddenCoordinates;
+            return directionsToAnimals;
         }
 
-        private int GetForbiddenCoordinate(int animalCoordinate, int detectedAnimalCoordinate)
+        private int GetDirectionToAnimal(int animalCoordinate1, int animalCoordinate2)
         {
-            if (animalCoordinate > detectedAnimalCoordinate)
+            if (animalCoordinate1 > animalCoordinate2)
             {
                 return -1;
             }
-            else if (animalCoordinate < detectedAnimalCoordinate)
+            else if (animalCoordinate1 < animalCoordinate2)
             {
                 return 1;
             }
@@ -157,14 +101,15 @@ namespace SavannaApp.Logic
             }
         }
 
-        private IEnumerable<IAnimal> GetAnimalsInVisionRange(IAnimal animal, IEnumerable<IAnimal> animals)
+        private IEnumerable<Coordinates> GetAnimalsCoordinatesInVisionRange
+            (IAnimal animal, IEnumerable<Coordinates> animalsCoordinates)
         {
             int xFrom = AdjustCoordinate(animal.Coordinates.X - animal.VisionRange);
             int yFrom = AdjustCoordinate(animal.Coordinates.Y - animal.VisionRange);
             int xTo = AdjustCoordinate(animal.Coordinates.X + animal.VisionRange);
             int yTo = AdjustCoordinate(animal.Coordinates.Y + animal.VisionRange);
 
-            var detectedAnimals = new List<IAnimal>();
+            var animalsCoordinatesInVisionRange = new List<Coordinates>();
             for (int y = yFrom; y < yTo; y++)
             {
                 for (int x = xFrom; x < xTo; x++)
@@ -172,48 +117,15 @@ namespace SavannaApp.Logic
                     var coordinates = new Coordinates(x, y);
                     if (!coordinates.Equals(animal.Coordinates))
                     {
-                        var foundAnimal = _animalLogic.FindAnimalByCoordinates(animals, coordinates);
-                        //if (foundAnimal != null && animal.GetType() != foundAnimal.GetType())
-                        detectedAnimals.Add(foundAnimal);
+                        var foundCoordinates = animalsCoordinates.FirstOrDefault(q => coordinates.Equals(q));
+                        if (foundCoordinates != null)
+                            animalsCoordinatesInVisionRange.Add(coordinates);
                     }
                 }
             }
 
-            return detectedAnimals;
+            return animalsCoordinatesInVisionRange;
         }
-
-        //public Coordinates Move(IAnimal animal, List<IAnimal> animals)
-        //{
-        //    if (animal.Coordinates == null)
-        //    {
-        //        return GetNewRandomCoordinates(animals, animal);
-        //    }
-
-        //    var animalsInVisionRange = new List<IAnimal>();
-        //    if (animals.Count > 1)
-        //    {
-        //        animalsInVisionRange = GetAnimalsInVisionRange(animal, animals);
-        //    }
-            
-        //    var forbiddenCoordinates = new List<Coordinates>();
-        //    if (animalsInVisionRange.Count > 0)
-        //    {
-        //        forbiddenCoordinates = GetForbiddenCoordinates(animal, animalsInVisionRange);
-        //    }
-
-        //    if (animals.Count > 1 && animalsInVisionRange.Count > 0 && forbiddenCoordinates.Count > 0)
-        //    {
-        //        var directions = GetDirections(animal, animalsInVisionRange);
-        //        Coordinates neededDirection = GetNeededDirection(animal, directions, forbiddenCoordinates);
-        //        int x = animal.Coordinates.X + neededDirection.X;
-        //        int y = animal.Coordinates.Y + neededDirection.Y;
-        //        var neededCoordinates = new Coordinates(x, y);
-        //        neededCoordinates = AdjustCoordinates(neededCoordinates);
-        //        return neededCoordinates;
-        //    }
-
-        //    return GetNewRandomCoordinates(animals, animal);
-        //}
 
         //private Animal CatchCarnivore(Animal predator, Animal carnivore)
         //{
@@ -225,28 +137,6 @@ namespace SavannaApp.Logic
 
         //}
 
-        private Coordinates GetNeededDirection(IAnimal animal, 
-            List<Coordinates> directions, List<Coordinates> forbiddenCoordinates)
-        {
-            var neededDirection = new Coordinates(0, 0);
-            if (animal is Lion)
-            {
-                int index = _random.Next(0, directions.Count);
-                neededDirection = forbiddenCoordinates[index];
-            }
-            else
-            {
-                neededDirection = GenerateRandomCoordinates(-1, 2);
-                while (forbiddenCoordinates.Find(f => neededDirection.Equals(f)) != null
-                    && neededDirection.X == 0 && neededDirection.Y == 0)
-                {
-                    neededDirection = GenerateRandomCoordinates(-1, 2);
-                }
-            }
-
-            return neededDirection;
-        }
-
         public Coordinates GetRandomAvailableCoordinates(IAnimal animal, IEnumerable<IAnimal> animals)
         {
             var coordinates = GenerateRandomCoordinates(0, ConstantValues.FieldDimensionX - 1);
@@ -256,19 +146,62 @@ namespace SavannaApp.Logic
             return coordinates;
         }
 
-        public Coordinates GetDirectionsToPrey(IAnimal predator, Coordinates closestPreyCoordinates)
+        private Coordinates GetDirectionToPrey(IAnimal predator, Coordinates closestPreyCoordinates)
         {
-            throw new NotImplementedException();
+            if (closestPreyCoordinates == null)
+                return null;
+
+            var x = GetDirectionToAnimal(predator.Coordinates.X, closestPreyCoordinates.X);
+            var y = GetDirectionToAnimal(predator.Coordinates.Y, closestPreyCoordinates.Y);
+
+            return new Coordinates(x, y);
+        }
+
+        public Coordinates GetPathToPrey(IAnimal predator, Coordinates closestPreyCoordinates)
+        {
+            if (closestPreyCoordinates == null)
+                return null;
+
+            var directionToPrey = GetDirectionToPrey(predator, closestPreyCoordinates);
+            int x = predator.Coordinates.X + directionToPrey.X;
+            int y = predator.Coordinates.X + directionToPrey.Y;
+
+            return AdjustCoordinates(new Coordinates(x, y));
+        }
+
+        private Coordinates GetEscapeDirection(IAnimal carnivore, IEnumerable<Coordinates> predatorCoordinatesInVisionRange)
+        {
+            if (predatorCoordinatesInVisionRange == null)
+            {
+                return null;
+            }
+
+            var directionsToPredators = GetDirectionsToAnimals(carnivore, predatorCoordinatesInVisionRange);
+            var escapeDirection = GenerateRandomCoordinates(-1, 2);
+            while (directionsToPredators.Any(x => x.Equals(escapeDirection)))
+                escapeDirection = GenerateRandomCoordinates(-1, 2);
+
+            return escapeDirection;
         }
 
         public Coordinates GetEscapePath(IAnimal carnivore, IEnumerable<Coordinates> predatorCoordinatesInVisionRange)
         {
-            throw new NotImplementedException();
+            if (predatorCoordinatesInVisionRange == null)
+            {
+                return null;
+            }
+
+            var escapeDirection = GetEscapeDirection(carnivore, predatorCoordinatesInVisionRange);
+            var x = carnivore.Coordinates.X + escapeDirection.X;
+            var y = carnivore.Coordinates.Y + escapeDirection.Y;
+
+            return AdjustCoordinates(new Coordinates(x, y));
         }
 
         public Coordinates GetClosestPreyCoordinatesInVisionRange(IAnimal predator, IEnumerable<IAnimal> carnivores)
         {
-            var animalsInVisionRange = GetAnimalsInVisionRange(predator, carnivores).ToList();
+            var carnivoresCoordinates = carnivores.Select(x => x.Coordinates);
+            var animalsInVisionRange = GetAnimalsCoordinatesInVisionRange(predator, carnivoresCoordinates).ToList();
             int[] stepsRequired = GetRequiredStepCountToPrey(predator, animalsInVisionRange);
 
             if (stepsRequired == null)
@@ -279,7 +212,7 @@ namespace SavannaApp.Logic
             return carnivores.ToList()[indexOfClosestPrey].Coordinates;
         }
 
-        private int[] GetRequiredStepCountToPrey(IAnimal predator, List<IAnimal> animalsInVisionRange)
+        private int[] GetRequiredStepCountToPrey(IAnimal predator, List<Coordinates> animalsInVisionRange)
         {
             if (animalsInVisionRange.Count == 0)
                 return null;
@@ -287,8 +220,8 @@ namespace SavannaApp.Logic
             int[] stepsRequired = new int[animalsInVisionRange.Count];
             for (int i = 0; i < animalsInVisionRange.Count; i++)
             {
-                var x = predator.Coordinates.X - animalsInVisionRange[i].Coordinates.X;
-                var y = predator.Coordinates.Y - animalsInVisionRange[i].Coordinates.Y;
+                var x = predator.Coordinates.X - animalsInVisionRange[i].X;
+                var y = predator.Coordinates.Y - animalsInVisionRange[i].Y;
                 stepsRequired[i] = Math.Abs(x - y);
             }
 
@@ -299,8 +232,9 @@ namespace SavannaApp.Logic
         {
             if (predators == null || predators.Count() == 0)
                 return null;
-            
-            return GetAnimalsInVisionRange(carnivore, predators).Select(x => x.Coordinates);
+
+            var predatorsCoordinates = predators.Select(x => x.Coordinates);
+            return GetAnimalsCoordinatesInVisionRange(carnivore, predatorsCoordinates);
         }
     }
 }

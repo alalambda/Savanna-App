@@ -47,10 +47,10 @@ namespace SavannaApp.Runner
                 while (Console.KeyAvailable == false && _animals.Any())
                 {
                     MoveCarnivores();
-                    Thread.Sleep(400);
+                    Thread.Sleep(1000);
 
                     MovePredators();
-                    Thread.Sleep(700);
+                    Thread.Sleep(1000);
                 }
 
                 keyPressedInfo = Console.ReadKey(true);

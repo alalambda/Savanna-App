@@ -39,7 +39,7 @@ namespace SavannaApp.Logic
             var closestPrey = _coordinatesLogic.GetClosestPreyCoordinatesInVisionRange(predator, carnivores);
 
             return closestPrey != null
-                ? _coordinatesLogic.GetDirectionsToPrey(predator, closestPrey)
+                ? _coordinatesLogic.GetPathToPrey(predator, closestPrey)
                 : _coordinatesLogic.GetPath(predator.Coordinates);
         }
 
