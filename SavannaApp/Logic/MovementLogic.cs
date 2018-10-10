@@ -19,6 +19,8 @@ namespace SavannaApp.Logic
         {
             if (animal.IsPredator)
             {
+                if (animal.Symbol == 'X')
+                    animal.Symbol = 'L';
                 animal.Coordinates = TryChasePrey(animal, animals);
                 TryEatPrey(animal, animals);
             }
@@ -31,7 +33,8 @@ namespace SavannaApp.Logic
         {
             if (animals.Any(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates)))
             {
-                animals.Where(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates));
+                animals = animals.Where(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates)).ToList();
+                animal.Symbol = 'X';
             }
         }
 

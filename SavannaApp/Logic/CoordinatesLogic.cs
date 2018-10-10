@@ -209,7 +209,7 @@ namespace SavannaApp.Logic
 
             var indexOfClosestPrey = Array.IndexOf(stepsRequired, stepsRequired.Min());
 
-            return carnivores.ToList()[indexOfClosestPrey].Coordinates;
+            return animalsInVisionRange[indexOfClosestPrey];
         }
 
         private int[] GetRequiredStepCountToPrey(IAnimal predator, List<Coordinates> animalsInVisionRange)
