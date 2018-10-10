@@ -5,7 +5,7 @@ namespace SavannaApp.Interfaces
 {
     internal interface IMovementLogic
     {
-        void Move(IAnimal animal, IEnumerable<IAnimal> animals);
+        List<IAnimal> Move(IAnimal animal, IEnumerable<IAnimal> animals);
         void Spawn(IAnimal animal, List<IAnimal> animals);
     }
 }

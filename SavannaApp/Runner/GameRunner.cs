@@ -15,7 +15,7 @@ namespace SavannaApp.Runner
     {
         private readonly AnimalFactory _animalFactory;
 
-        private readonly List<IAnimal> _animals;
+        private List<IAnimal> _animals;
 
         private readonly IUserInterface _userInterface;
 
@@ -62,7 +62,7 @@ namespace SavannaApp.Runner
         {
             foreach (var predator in _animals.Where(a => a.IsPredator))
             {
-                _movementLogic.Move(predator, _animals);
+                _animals = _movementLogic.Move(predator, _animals);
                 RefreshField();
             }
         }
@@ -71,7 +71,7 @@ namespace SavannaApp.Runner
         {
             foreach (var carnivore in _animals.Where(a => !a.IsPredator))
             {
-                _movementLogic.Move(carnivore, _animals);
+                _animals = _movementLogic.Move(carnivore, _animals);
                 RefreshField();
             }
         }

@@ -16,35 +16,44 @@ namespace SavannaApp.Logic
             _coordinatesLogic = new CoordinatesLogic();
         }
 
-        public void Move(IAnimal animal, IEnumerable<IAnimal> animals)
+        public List<IAnimal> Move(IAnimal animal, IEnumerable<IAnimal> animals)
         {
-            RemoveCorpses(animals);
+            //animals = RemoveCorpses(animals);
             if (animal.IsPredator)
             {
                 animal.Coordinates = TryChasePrey(animal, animals);
-                TryEatPrey(animal, animals);
+                animals = TryEatPrey(animal, animals);
             }
 
             else
                 animal.Coordinates = TryEscape(animal, animals);
+
+            return animals.ToList();
         }
 
-        private void TryEatPrey(IAnimal animal, IEnumerable<IAnimal> animals)
+        private IEnumerable<IAnimal> TryEatPrey(IAnimal animal, IEnumerable<IAnimal> animals)
         {
             if (animals.Any(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates)))
             {
-                //animals = animals.Where(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates)).ToList();
-                animals = animals
-                    .Where(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates))
-                    .Select(x => { x.Symbol = ConstantValues.LionEatsAntelope; return x; })
-                    .ToList();
+                //TODO: refactor the remove part
+                IAnimal animalToDead = animals.FirstOrDefault(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates));
+                var animalsList = animals.ToList();
+                animalsList.Remove(animalToDead);
+                return animalsList;
             }
+
+            return animals;
         }
 
-        private void RemoveCorpses(IEnumerable<IAnimal> animals)
-        {
-            animals.Where(x => x.Symbol != ConstantValues.LionEatsAntelope);
-        }
+        //private IEnumerable<IAnimal> RemoveCorpses(IEnumerable<IAnimal> animals)
+        //{
+        //    if (animals.Any(x => x.Symbol == ConstantValues.Dead))
+        //    {
+        //        return animals.Where(x => x.Symbol != ConstantValues.Dead).ToList();
+        //    }
+
+        //    return animals;
+        //}
 
         private Coordinates TryEscape(IAnimal carnivore, IEnumerable<IAnimal> animals)
         {

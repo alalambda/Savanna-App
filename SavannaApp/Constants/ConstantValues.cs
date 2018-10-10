@@ -14,8 +14,7 @@ namespace SavannaApp.Constants
         public const char Lion = 'L';
         public const char Antelope = 'A';
         public const char Empty = '-';
-        public const char LionCatchesAntelope = 'O';
-        public const char LionEatsAntelope = 'X';
+        public const char Dead = 'X';
 
         public const decimal HealthDecrease = 0.5m;
         public const decimal Health = 50;
