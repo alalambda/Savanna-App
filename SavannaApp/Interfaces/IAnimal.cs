@@ -8,7 +8,7 @@ namespace SavannaApp.Interfaces
         Coordinates Coordinates { get; set; }
 
         int VisionRange { get; }
-        char Symbol { get; }
+        char Symbol { get; set; }
         bool IsPredator { get; }
     }
 }

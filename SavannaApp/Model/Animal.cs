@@ -8,7 +8,7 @@ namespace SavannaApp.Model
         public Coordinates Coordinates { get; set; }
 
         public int VisionRange { get; protected set; }
-        public char Symbol { get; protected set; }
+        public char Symbol { get; set; }
 
         public abstract bool IsPredator { get; }
     }

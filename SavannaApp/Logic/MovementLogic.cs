@@ -18,9 +18,21 @@ namespace SavannaApp.Logic
         public void Move(IAnimal animal, IEnumerable<IAnimal> animals)
         {
             if (animal.IsPredator)
+            {
                 animal.Coordinates = TryChasePrey(animal, animals);
+                TryEatPrey(animal, animals);
+            }
+                
             else
                 animal.Coordinates = TryEscape(animal, animals);
+        }
+
+        private void TryEatPrey(IAnimal animal, IEnumerable<IAnimal> animals)
+        {
+            if (animals.Any(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates)))
+            {
+                animals.Where(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates));
+            }
         }
 
         private Coordinates TryEscape(IAnimal carnivore, IEnumerable<IAnimal> animals)
