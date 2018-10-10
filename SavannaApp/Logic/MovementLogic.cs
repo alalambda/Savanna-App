@@ -3,6 +3,7 @@ using SavannaApp.Interfaces;
 using SavannaApp.Model;
 using System;
 using System.Linq;
+using SavannaApp.Constants;
 
 namespace SavannaApp.Logic
 {
@@ -17,14 +18,13 @@ namespace SavannaApp.Logic
 
         public void Move(IAnimal animal, IEnumerable<IAnimal> animals)
         {
+            RemoveCorpses(animals);
             if (animal.IsPredator)
             {
-                if (animal.Symbol == 'X')
-                    animal.Symbol = 'L';
                 animal.Coordinates = TryChasePrey(animal, animals);
                 TryEatPrey(animal, animals);
             }
-                
+
             else
                 animal.Coordinates = TryEscape(animal, animals);
         }
@@ -33,9 +33,17 @@ namespace SavannaApp.Logic
         {
             if (animals.Any(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates)))
             {
-                animals = animals.Where(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates)).ToList();
-                animal.Symbol = 'X';
+                //animals = animals.Where(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates)).ToList();
+                animals = animals
+                    .Where(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates))
+                    .Select(x => { x.Symbol = ConstantValues.LionEatsAntelope; return x; })
+                    .ToList();
             }
+        }
+
+        private void RemoveCorpses(IEnumerable<IAnimal> animals)
+        {
+            animals.Where(x => x.Symbol != ConstantValues.LionEatsAntelope);
         }
 
         private Coordinates TryEscape(IAnimal carnivore, IEnumerable<IAnimal> animals)
