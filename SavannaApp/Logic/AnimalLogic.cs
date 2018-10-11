@@ -41,14 +41,14 @@ namespace SavannaApp.Logic
         public IAnimal Spawn(IAnimal animal, IEnumerable<IAnimal> animals)
         {
             animal.MatingIndex = GetMatingIndex(animal, animals);
-            if (animal.MatingIndex != 3)
+            if (animal.MatingIndex == 3)
             {
-                return null;
+                var newAnimal = _animalFactory.CreateAnimal(animal.Symbol);
+                animal.MatingIndex = 0;
+                return newAnimal;
             }
 
-            var newAnimal = _animalFactory.CreateAnimal(animal.Symbol);
-            animal.MatingIndex = 0;
-            return newAnimal;
+            return null;
         }
 
         public int GetMatingIndex(IAnimal animal, IEnumerable<IAnimal> animals)
@@ -56,7 +56,7 @@ namespace SavannaApp.Logic
             int matingIndex = animal.MatingIndex;
             var neighbours = GetNeighbours(animal, animals);
             if (neighbours.Any())
-                matingIndex++;
+                return ++matingIndex;
 
             return 0;
         }
