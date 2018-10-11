@@ -41,7 +41,7 @@ namespace SavannaApp.Logic
         public IAnimal Spawn(IAnimal animal, IEnumerable<IAnimal> animals)
         {
             animal.MatingIndex = GetMatingIndex(animal, animals);
-            if (animal.MatingIndex == 3)
+            if (animal.MatingIndex == ConstantValues.MatingMaxIndex)
             {
                 var newAnimal = _animalFactory.CreateAnimal(animal.Symbol);
                 animal.MatingIndex = 0;
