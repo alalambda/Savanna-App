@@ -29,6 +29,8 @@ namespace SavannaApp.Logic
 
             animals = _animalLogic.RemoveDeadAnimals(animals);
 
+            animals = TryGiveBirth(animal, animals);
+
             if (animal.IsPredator)
             {
                 animal.Coordinates = TryChasePrey(animal, animals);
@@ -45,6 +47,16 @@ namespace SavannaApp.Logic
             return animals.ToList();
         }
 
+        private IEnumerable<IAnimal> TryGiveBirth(IAnimal animal, IEnumerable<IAnimal> animals)
+        {
+            var newAnimal = _animalLogic.Spawn(animal, animals);
+            if (newAnimal != null)
+            {
+                animals.ToList().Add(newAnimal);
+            }
+            return animals;
+        }
+
         private IEnumerable<IAnimal> TryEatPrey(IAnimal animal, IEnumerable<IAnimal> animals)
         {
             if (animals.Any(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates)))
@@ -58,7 +70,6 @@ namespace SavannaApp.Logic
                     .ToList()
                     .FirstOrDefault(x => x.IsPredator && animal.Coordinates.Equals(x.Coordinates))
                     .Health = _healthLogic.IncreaseHealth(animal.Health);
-
             }
 
             return animals;

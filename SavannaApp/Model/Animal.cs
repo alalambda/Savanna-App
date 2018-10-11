@@ -6,6 +6,7 @@ namespace SavannaApp.Model
     {
         public decimal Health { get; set; }
         public Coordinates Coordinates { get; set; }
+        public int MatingIndex { get; set; }
 
         public int VisionRange { get; protected set; }
         public char Symbol { get; set; }

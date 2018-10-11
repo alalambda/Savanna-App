@@ -7,6 +7,7 @@ namespace SavannaApp.Model
     {
         public Antelope()
         {
+            MatingIndex = 0;
             Health = ConstantValues.Health;
             VisionRange = ConstantValues.VisionRange;
             Symbol = 'A';

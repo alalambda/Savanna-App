@@ -7,6 +7,8 @@ namespace SavannaApp.Interfaces
         decimal Health { get; set; }
         Coordinates Coordinates { get; set; }
 
+        int MatingIndex { get; set; }
+
         int VisionRange { get; }
         char Symbol { get; set; }
         bool IsPredator { get; }

@@ -19,5 +19,7 @@ namespace SavannaApp.Constants
         public const decimal HealthDecrease = 0.5m;
         public const decimal HealthIncrease = 10m;
         public const decimal Health = 50m;
+
+        public const int MatingMaxIndex = 3;
     }
 }
