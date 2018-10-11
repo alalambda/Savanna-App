@@ -22,15 +22,25 @@ namespace SavannaApp.Logic
 
         public List<IAnimal> Move(IAnimal animal, IEnumerable<IAnimal> animals)
         {
+            if (animal.Health <= 0)
+            {
+                animals = _healthLogic.Die(animal, animals);
+            }
+
             animals = _animalLogic.RemoveDeadAnimals(animals);
+
             if (animal.IsPredator)
             {
                 animal.Coordinates = TryChasePrey(animal, animals);
+                animal.Health = _healthLogic.DecreaseHealth(animal.Health);
                 animals = TryEatPrey(animal, animals);
             }
 
             else
+            {
                 animal.Coordinates = TryEscape(animal, animals);
+                animal.Health = _healthLogic.DecreaseHealth(animal.Health);
+            }
 
             return animals.ToList();
         }
@@ -43,6 +53,12 @@ namespace SavannaApp.Logic
                     .ToList()
                     .FirstOrDefault(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates))
                     .Symbol = ConstantValues.Dead;
+
+                animals
+                    .ToList()
+                    .FirstOrDefault(x => x.IsPredator && animal.Coordinates.Equals(x.Coordinates))
+                    .Health = _healthLogic.IncreaseHealth(animal.Health);
+
             }
 
             return animals;

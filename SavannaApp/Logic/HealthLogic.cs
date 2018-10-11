@@ -10,26 +10,27 @@ namespace SavannaApp.Logic
 {
     public class HealthLogic : IHealthLogic
     {
-        public decimal DecreaseHealth(IAnimal animal)
+        public decimal DecreaseHealth(decimal currentHealth)
         {
-            return animal.Health -= ConstantValues.HealthDecrease;
+            return currentHealth -= ConstantValues.HealthDecrease;
         }
 
         public IEnumerable<IAnimal> Die(IAnimal animal, IEnumerable<IAnimal> animals)
         {
-            if (animal.Health <= 0)
+            foreach (var item in animals)
             {
-                var animalsList = animals.ToList();
-                animalsList.Remove(animal);
-                return animalsList;
+                if (item.Health <= 0)
+                {
+                    item.Symbol = ConstantValues.Dead;
+                }
             }
 
             return animals;
         }
 
-        public decimal IncreaseHealth(IAnimal animal)
+        public decimal IncreaseHealth(decimal currentHealth)
         {
-            return animal.Health += ConstantValues.HealthIncrease;
+            return currentHealth += ConstantValues.HealthIncrease;
         }
     }
 }

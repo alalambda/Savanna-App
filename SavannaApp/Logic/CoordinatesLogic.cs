@@ -127,16 +127,6 @@ namespace SavannaApp.Logic
             return animalsCoordinatesInVisionRange;
         }
 
-        //private Animal CatchCarnivore(Animal predator, Animal carnivore)
-        //{
-
-        //}
-
-        //private Animal EatCarnivore(Animal predator, Animal carnivore)
-        //{
-
-        //}
-
         public Coordinates GetRandomAvailableCoordinates(IAnimal animal, IEnumerable<IAnimal> animals)
         {
             var coordinates = GenerateRandomCoordinates(0, ConstantValues.FieldDimensionX - 1);
