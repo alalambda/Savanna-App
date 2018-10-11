@@ -16,23 +16,17 @@ namespace SavannaApp.Logic
             return animals?.Where(x => coordinates.Equals(x.Coordinates)).FirstOrDefault();
         }
 
-        public decimal DecreaseHealth(IAnimal animal)
+        public IEnumerable<IAnimal> RemoveDeadAnimals(IEnumerable<IAnimal> animals)
         {
-            decimal health = animal.Health - ConstantValues.HealthDecrease;
-            if (health < 0)
+            if (animals.Any(x => x.Symbol == ConstantValues.Dead))
             {
-                health = 0;
+                //TODO: refactor the remove part
+                IAnimal animalToDead = animals.FirstOrDefault(x => x.Symbol == ConstantValues.Dead);
+                var animalsList = animals.ToList();
+                animalsList.Remove(animalToDead);
+                return animalsList;
             }
 
-            return health;
-        }
-
-        public IEnumerable<IAnimal> Die(IAnimal animal, IEnumerable<IAnimal> animals)
-        {
-            if (animal.Health == 0)
-            {
-                animals.Where(x => x != animal);
-            }
             return animals;
         }
     }

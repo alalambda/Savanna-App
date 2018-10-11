@@ -10,15 +10,19 @@ namespace SavannaApp.Logic
     class MovementLogic : IMovementLogic
     {
         private readonly ICoordinatesLogic _coordinatesLogic;
+        private readonly IHealthLogic _healthLogic;
+        private readonly IAnimalLogic _animalLogic;
 
         public MovementLogic()
         {
             _coordinatesLogic = new CoordinatesLogic();
+            _healthLogic = new HealthLogic();
+            _animalLogic = new AnimalLogic();
         }
 
         public List<IAnimal> Move(IAnimal animal, IEnumerable<IAnimal> animals)
         {
-            animals = RemoveCorpses(animals);
+            animals = _animalLogic.RemoveDeadAnimals(animals);
             if (animal.IsPredator)
             {
                 animal.Coordinates = TryChasePrey(animal, animals);
@@ -39,20 +43,6 @@ namespace SavannaApp.Logic
                     .ToList()
                     .FirstOrDefault(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates))
                     .Symbol = ConstantValues.Dead;
-            }
-
-            return animals;
-        }
-
-        private IEnumerable<IAnimal> RemoveCorpses(IEnumerable<IAnimal> animals)
-        {
-            if (animals.Any(x => x.Symbol == ConstantValues.Dead))
-            {
-                //TODO: refactor the remove part
-                IAnimal animalToDead = animals.FirstOrDefault(x => x.Symbol == ConstantValues.Dead);
-                var animalsList = animals.ToList();
-                animalsList.Remove(animalToDead);
-                return animalsList;
             }
 
             return animals;
