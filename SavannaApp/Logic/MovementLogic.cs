@@ -18,7 +18,7 @@ namespace SavannaApp.Logic
 
         public List<IAnimal> Move(IAnimal animal, IEnumerable<IAnimal> animals)
         {
-            //animals = RemoveCorpses(animals);
+            animals = RemoveCorpses(animals);
             if (animal.IsPredator)
             {
                 animal.Coordinates = TryChasePrey(animal, animals);
@@ -35,8 +35,21 @@ namespace SavannaApp.Logic
         {
             if (animals.Any(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates)))
             {
+                animals
+                    .ToList()
+                    .FirstOrDefault(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates))
+                    .Symbol = ConstantValues.Dead;
+            }
+
+            return animals;
+        }
+
+        private IEnumerable<IAnimal> RemoveCorpses(IEnumerable<IAnimal> animals)
+        {
+            if (animals.Any(x => x.Symbol == ConstantValues.Dead))
+            {
                 //TODO: refactor the remove part
-                IAnimal animalToDead = animals.FirstOrDefault(x => !x.IsPredator && animal.Coordinates.Equals(x.Coordinates));
+                IAnimal animalToDead = animals.FirstOrDefault(x => x.Symbol == ConstantValues.Dead);
                 var animalsList = animals.ToList();
                 animalsList.Remove(animalToDead);
                 return animalsList;
@@ -44,16 +57,6 @@ namespace SavannaApp.Logic
 
             return animals;
         }
-
-        //private IEnumerable<IAnimal> RemoveCorpses(IEnumerable<IAnimal> animals)
-        //{
-        //    if (animals.Any(x => x.Symbol == ConstantValues.Dead))
-        //    {
-        //        return animals.Where(x => x.Symbol != ConstantValues.Dead).ToList();
-        //    }
-
-        //    return animals;
-        //}
 
         private Coordinates TryEscape(IAnimal carnivore, IEnumerable<IAnimal> animals)
         {

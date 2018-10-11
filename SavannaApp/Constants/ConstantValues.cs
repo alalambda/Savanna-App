@@ -17,6 +17,7 @@ namespace SavannaApp.Constants
         public const char Dead = 'X';
 
         public const decimal HealthDecrease = 0.5m;
-        public const decimal Health = 50;
+        public const decimal HealthIncrease = 10m;
+        public const decimal Health = 50m;
     }
 }
