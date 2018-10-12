@@ -52,8 +52,10 @@ namespace SavannaApp.Logic
             var newAnimal = _animalLogic.Spawn(animal, animals);
             if (newAnimal != null)
             {
+                var animalsList = animals.ToList();
                 Spawn(newAnimal, animals.ToList());
-                animals.ToList().Add(newAnimal);
+                animalsList.Add(newAnimal);
+                return animalsList;
             }
             return animals;
         }

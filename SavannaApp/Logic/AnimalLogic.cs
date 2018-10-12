@@ -70,13 +70,12 @@ namespace SavannaApp.Logic
                 {
                     Coordinates coordinates = GetNeighbourCoordinates(animal, new Coordinates(x, y));
                     var neighbourAnimal = FindAnimalByCoordinates(animals, coordinates);
-                    if (neighbourAnimal != null && animal.GetType() == neighbourAnimal.GetType())
+                    if (neighbourAnimal != null && animal != neighbourAnimal && animal.GetType() == neighbourAnimal.GetType())
                     {
                         neighbours.Add(neighbourAnimal);
                     }
                 }
             }
-            neighbours.Remove(animal);
             return neighbours;
         }
 
