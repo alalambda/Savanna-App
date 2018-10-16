@@ -1,8 +1,6 @@
-﻿using Newtonsoft.Json;
-using SavannaApp.Factory;
+﻿using SavannaApp.Factory;
 using SavannaApp.Interfaces;
 using SavannaApp.Logic;
-using SavannaApp.Model;
 using SavannaApp.UserInterface;
 using System;
 using System.Collections.Generic;

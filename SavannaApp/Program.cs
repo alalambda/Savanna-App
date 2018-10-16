@@ -1,5 +1,4 @@
 ﻿using SavannaApp.Runner;
-using System;
 
 namespace SavannaApp
 {

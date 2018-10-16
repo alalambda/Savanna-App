@@ -1,10 +1,6 @@
 ﻿using SavannaApp.Constants;
 using SavannaApp.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using SavannaApp.Model;
 
 namespace SavannaApp.Logic
 {

@@ -1,7 +1,4 @@
-﻿using SavannaApp.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace SavannaApp.Interfaces
 {
@@ -9,7 +6,5 @@ namespace SavannaApp.Interfaces
     {
         void PrintField(List<IAnimal> animals);
         char GetAnimalChar();
-        void EnterAnimalsMessage();
-
     }
 }

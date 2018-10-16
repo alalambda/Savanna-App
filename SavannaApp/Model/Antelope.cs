@@ -1,5 +1,4 @@
 ﻿using SavannaApp.Constants;
-using SavannaApp.Interfaces;
 
 namespace SavannaApp.Model
 {

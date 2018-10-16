@@ -4,7 +4,6 @@ using SavannaApp.Logic;
 using SavannaApp.Model;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SavannaApp.UserInterface
 {
@@ -47,19 +46,9 @@ namespace SavannaApp.UserInterface
             Console.Write(stringToPrintOut);
         }
 
-        public void EnterAnimalsMessage()
-        {
-            Console.WriteLine("Enter animals. A - antelope, L - lion.");
-        }
-
         public char GetAnimalChar()
         {
             return Console.ReadKey(true).KeyChar;
-        }
-
-        private void InvalidInputMessage()
-        {
-            Console.WriteLine("Invalid input.");
         }
     }
 }

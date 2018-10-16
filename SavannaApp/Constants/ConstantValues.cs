@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SavannaApp.Constants
+﻿namespace SavannaApp.Constants
 {
     public static class ConstantValues
     {
