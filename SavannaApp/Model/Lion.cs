@@ -1,7 +1,10 @@
 ﻿using SavannaApp.Constants;
+using SavannaApp.Interfaces;
+using System.Composition;
 
 namespace SavannaApp.Model
 {
+    //[Export(typeof(IAnimal))]
     public class Lion : Animal
     {
         public Lion()

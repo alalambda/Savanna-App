@@ -4,6 +4,7 @@ using SavannaApp.Logic;
 using SavannaApp.UserInterface;
 using System;
 using System.Collections.Generic;
+using System.Composition;
 using System.Linq;
 using System.Threading;
 
@@ -13,6 +14,7 @@ namespace SavannaApp.Runner
     {
         private readonly AnimalFactory _animalFactory;
 
+        //[ImportMany(typeof(IAnimal))]
         private List<IAnimal> _animals;
 
         private readonly IUserInterface _userInterface;
