@@ -27,14 +27,7 @@ namespace SavannaApp.UserInterface
                     var animal = _animalLogic.FindAnimalByCoordinates(animals, coordinates);
                     if (animal != null)
                     {
-                        if (animal is Antelope antelope)
-                        {
-                            stringToPrintOut += $"{antelope.Symbol} ";
-                        }
-                        else if (animal is Lion lion)
-                        {
-                            stringToPrintOut += $"{lion.Symbol} ";
-                        }
+                        stringToPrintOut += $"{animal.Symbol} ";
                     }
                     else
                     {
