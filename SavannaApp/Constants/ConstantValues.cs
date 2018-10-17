@@ -5,10 +5,8 @@
         public const int FieldDimensionX = 20;
         public const int FieldDimensionY = 20;
 
-        public const int VisionRange = 2;
+        public const int VisionRange = 7;
 
-        public const char Lion = 'L';
-        public const char Antelope = 'A';
         public const char Empty = '-';
         public const char Dead = 'X';
 
