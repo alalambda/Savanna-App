@@ -64,9 +64,10 @@ namespace SavannaApp.Factory
         private IEnumerable<PropertyInfo> GetProperties()
         {
             var properties = Assembly
-                .GetAssembly(typeof(Animal))
+                .GetAssembly(typeof(IAnimal))
                 .GetTypes()
-                .Where(t => t.IsSubclassOf(typeof(Animal)))
+                .Where(t => t.IsAssignableFrom(typeof(IAnimal)))
+                .Where(t => !t.IsInterface)
                 .SelectMany(t => t.GetProperties());
 
             return properties;

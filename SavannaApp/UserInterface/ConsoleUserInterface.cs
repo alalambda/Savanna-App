@@ -19,7 +19,7 @@ namespace SavannaApp.UserInterface
 
         public void PrintField(List<IAnimal> animals)
         {
-            var StringBuilder = new StringBuilder();
+            //var StringBuilder = new StringBuilder();
             for (int y = 0; y < ConstantValues.FieldDimensionY; y++)
             {
                 for (int x = 0; x < ConstantValues.FieldDimensionX; x++)
@@ -28,16 +28,26 @@ namespace SavannaApp.UserInterface
                     var animal = _animalLogic.FindAnimalByCoordinates(animals, coordinates);
                     if (animal != null)
                     {
-                        StringBuilder.Append($"{animal.Symbol} ");
+                        //StringBuilder.Append($"{animal.Symbol} ");
+                        //if (animal.Symbol == 'A')
+                        //    Console.BackgroundColor = ConsoleColor.DarkGreen;
+                        //else
+                        //    Console.BackgroundColor = ConsoleColor.DarkRed;
+
+                        Console.Write($"{animal.Symbol} ");
+                        
                     }
                     else
                     {
-                        StringBuilder.Append($"{ConstantValues.Empty} ");
+                        //StringBuilder.Append($"{ConstantValues.Empty} ");
+                        //Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write($"{ConstantValues.Empty} ");
                     }
                 }
-                StringBuilder.AppendLine();
+                Console.WriteLine();
+                //StringBuilder.AppendLine();
             }
-            Console.Write(StringBuilder);
+            
         }
 
         public char GetAnimalChar()

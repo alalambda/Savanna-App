@@ -5,16 +5,14 @@ using System.Composition;
 namespace SavannaApp.Model
 {
     //[Export(typeof(IAnimal))]
-    public class Antelope : Animal
+    public class Antelope : IAnimal
     {
-        public Antelope()
-        {
-            MatingIndex = 0;
-            Health = ConstantValues.Health;
-            VisionRange = ConstantValues.VisionRange;
-            Symbol = 'A';
-        }
+        public decimal Health { get; set; } = 50m;
+        public Coordinates Coordinates { get; set; }
+        public int MatingIndex { get; set; } = 0;
+        public char Symbol { get; set; } = 'A';
 
-        public override bool IsPredator => false;
+        public int VisionRange { get; } = 2;
+        public bool IsPredator { get; } = false;
     }
 }

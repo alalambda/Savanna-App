@@ -87,7 +87,8 @@ namespace SavannaApp.Runner
 
         private void RefreshField()
         {
-            Console.Clear();
+            Console.CursorVisible = false;
+            Console.SetCursorPosition(0, 0);
             _userInterface.PrintField(_animals);
         }
     }
