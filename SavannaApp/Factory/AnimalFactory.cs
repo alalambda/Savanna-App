@@ -26,14 +26,14 @@ namespace SavannaApp.Factory
 
         private IAnimal GetAnimalInstance(char availableChar)
         {
-            var properties = GetProperties();
-            foreach (var property in properties)
+            var implementations = GetImplementations();
+            foreach (var implementation in implementations)
             {
-                if (property.Name == "Symbol")
+                var symbol = implementation.GetProperty("Symbol");
+                if (symbol != null)
                 {
-                    var animalType = property.ReflectedType;
-                    var animal = Activator.CreateInstance(animalType);
-                    var animalChar = (char) property.GetValue(animal);
+                    var animal = Activator.CreateInstance(implementation);
+                    var animalChar = (char)symbol.GetValue(animal);
                     if (availableChar == animalChar)
                     {
                         return (IAnimal) animal;
@@ -45,32 +45,32 @@ namespace SavannaApp.Factory
 
         private List<char> GetAvailableChars()
         {
-            var properties = GetProperties();
+            var implementations = GetImplementations();
 
             var animalCharList = new List<char>();
-            foreach (var property in properties)
+
+            foreach (var implementation in implementations)
             {
-                if (property.Name == "Symbol")
+                var symbol = implementation.GetProperty("Symbol");
+                if (symbol != null)
                 {
-                    var animalType = property.ReflectedType;
-                    var animal = Activator.CreateInstance(animalType);
-                    animalCharList.Add((char) property.GetValue(animal));
+                    var animal = Activator.CreateInstance(implementation);
+                    animalCharList.Add((char) symbol.GetValue(animal));
                 }
             }
 
             return animalCharList;
         }
 
-        private IEnumerable<PropertyInfo> GetProperties()
+        private IEnumerable<Type> GetImplementations()
         {
-            var properties = Assembly
-                .GetAssembly(typeof(IAnimal))
-                .GetTypes()
-                .Where(t => t.IsAssignableFrom(typeof(IAnimal)))
-                .Where(t => !t.IsInterface)
-                .SelectMany(t => t.GetProperties());
+            var parentType = typeof(IAnimal);
+            var assembly = Assembly.GetExecutingAssembly();
+            var types = assembly.GetTypes();
 
-            return properties;
+            var implementations = types.Where(t => t.GetInterfaces().Contains(parentType));
+
+            return implementations;
         }
     }
 }
