@@ -12,7 +12,7 @@ namespace SavannaApp.Model
         public int MatingIndex { get; set; } = 0;
         public char Symbol { get; set; } = 'A';
 
-        public int VisionRange { get; } = 2;
+        public int VisionRange { get; } = 4;
         public bool IsPredator { get; } = false;
     }
 }

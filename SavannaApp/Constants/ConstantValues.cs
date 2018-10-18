@@ -2,8 +2,8 @@
 {
     public static class ConstantValues
     {
-        public const int FieldDimensionX = 20;
-        public const int FieldDimensionY = 20;
+        public const int FieldDimensionX = 6;
+        public const int FieldDimensionY = 6;
 
         public const int VisionRange = 7;
 

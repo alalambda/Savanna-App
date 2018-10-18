@@ -154,7 +154,7 @@ namespace SavannaApp.Logic
 
             var directionToPrey = GetDirectionToPrey(predator, closestPreyCoordinates);
             int x = predator.Coordinates.X + directionToPrey.X;
-            int y = predator.Coordinates.X + directionToPrey.Y;
+            int y = predator.Coordinates.Y + directionToPrey.Y;
 
             return AdjustCoordinates(new Coordinates(x, y));
         }
