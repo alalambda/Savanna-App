@@ -63,8 +63,8 @@ namespace SavannaApp.Runner
             foreach (var predator in _animals.Where(a => a.IsPredator))
             {
                 _animals = _movementLogic.Move(predator, _animals);
-                RefreshField();
             }
+            RefreshField();
         }
 
         private void MoveCarnivores()
@@ -72,8 +72,8 @@ namespace SavannaApp.Runner
             foreach (var carnivore in _animals.Where(a => !a.IsPredator))
             {
                 _animals = _movementLogic.Move(carnivore, _animals);
-                RefreshField();
             }
+            RefreshField();
         }
 
         private IAnimal CreateAnimal(ConsoleKeyInfo? keyPressedInfo)

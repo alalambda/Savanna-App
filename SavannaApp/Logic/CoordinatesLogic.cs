@@ -130,7 +130,7 @@ namespace SavannaApp.Logic
         public Coordinates GetRandomAvailableCoordinates(IAnimal animal, IEnumerable<IAnimal> animals)
         {
             var coordinates = GenerateRandomCoordinates(0, ConstantValues.FieldDimensionX - 1);
-            while (_animalLogic.FindAnimalByCoordinates(animals, coordinates) != null)
+            while (_animalLogic.FindAnimalByCoordinates(animals.ToList(), coordinates) != null)
                 coordinates = GenerateRandomCoordinates(0, ConstantValues.FieldDimensionX - 1);
 
             return coordinates;

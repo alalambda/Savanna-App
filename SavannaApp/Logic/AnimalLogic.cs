@@ -15,12 +15,13 @@ namespace SavannaApp.Logic
         {
             _animalFactory = new AnimalFactory();
         }
-        public IAnimal FindAnimalByCoordinates(IEnumerable<IAnimal> animals, Coordinates coordinates)
+        public IAnimal FindAnimalByCoordinates(List<IAnimal> animals, Coordinates coordinates)
         {
             if (coordinates == null)
                 return null;
 
-            return animals?.Where(x => coordinates.Equals(x.Coordinates)).FirstOrDefault();
+            return animals?.Find(x => coordinates.Equals(x.Coordinates));
+            //return animals?.Where(x => coordinates.Equals(x.Coordinates)).FirstOrDefault();
         }
 
         public IEnumerable<IAnimal> RemoveDeadAnimals(IEnumerable<IAnimal> animals)
@@ -68,7 +69,7 @@ namespace SavannaApp.Logic
                 for (int x = animal.Coordinates.X - 1; x <= animal.Coordinates.X + 1; x++)
                 {
                     Coordinates coordinates = GetNeighbourCoordinates(animal, new Coordinates(x, y));
-                    var neighbourAnimal = FindAnimalByCoordinates(animals, coordinates);
+                    var neighbourAnimal = FindAnimalByCoordinates(animals.ToList(), coordinates);
                     if (neighbourAnimal != null && animal != neighbourAnimal && animal.GetType() == neighbourAnimal.GetType())
                     {
                         neighbours.Add(neighbourAnimal);
