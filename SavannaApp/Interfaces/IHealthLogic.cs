@@ -6,6 +6,6 @@ namespace SavannaApp.Interfaces
     {
         decimal IncreaseHealth(decimal currentHealth);
         decimal DecreaseHealth(decimal currentHealth);
-        IEnumerable<IAnimal> Die(IAnimal animal, IEnumerable<IAnimal> animals);
+        IList<IAnimal> Die(IList<IAnimal> animals);
     }
 }

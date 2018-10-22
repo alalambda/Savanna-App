@@ -23,7 +23,7 @@ namespace SavannaApp.Logic
         {
             if (animal.Health <= 0)
             {
-                animals = _healthLogic.Die(animal, animals);
+                animals = _healthLogic.Die(animals.ToList());
             }
 
             animals = _animalLogic.RemoveDeadAnimals(animals);

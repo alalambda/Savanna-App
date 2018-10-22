@@ -11,7 +11,7 @@ namespace SavannaApp.Logic
             return currentHealth -= ConstantValues.HealthDecrease;
         }
 
-        public IEnumerable<IAnimal> Die(IAnimal animal, IEnumerable<IAnimal> animals)
+        public IList<IAnimal> Die(IList<IAnimal> animals)
         {
             foreach (var item in animals)
             {

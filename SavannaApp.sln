@@ -5,10 +5,9 @@ VisualStudioVersion = 15.0.28010.2019
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SavannaApp", "SavannaApp\SavannaApp.csproj", "{E4413B3B-441E-4024-BA6E-27902DC13433}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SavannaApp.Tests", "SavannaApp.Tests1\SavannaApp.Tests.csproj", "{81B0B009-4BC3-4D63-88A4-C417731F46F2}"
+EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -18,11 +17,18 @@ Global
 		{E4413B3B-441E-4024-BA6E-27902DC13433}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4413B3B-441E-4024-BA6E-27902DC13433}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4413B3B-441E-4024-BA6E-27902DC13433}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81B0B009-4BC3-4D63-88A4-C417731F46F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81B0B009-4BC3-4D63-88A4-C417731F46F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81B0B009-4BC3-4D63-88A4-C417731F46F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81B0B009-4BC3-4D63-88A4-C417731F46F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CA3CE56D-381D-4CF2-A3B6-2A094BD8FF93}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal
