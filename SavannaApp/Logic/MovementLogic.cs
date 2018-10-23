@@ -97,9 +97,12 @@ namespace SavannaApp.Logic
             var predators = animals.Where(a => a.IsPredator).ToList();
             var predatorsInVisionRange = _coordinatesLogic.GetPredatorsCoordinatesInVisionRange(carnivore, predators);
 
-            return predatorsInVisionRange != null
-                ? _coordinatesLogic.GetEscapePath(carnivore, predatorsInVisionRange)
-                : _coordinatesLogic.GetPath(carnivore.Coordinates);
+            if (predatorsInVisionRange == null)
+            {
+                return _coordinatesLogic.GetPath(carnivore.Coordinates);
+            }
+
+            return _coordinatesLogic.GetEscapePath(carnivore, predatorsInVisionRange);
         }
 
         private Coordinates TryChasePrey(IAnimal predator, IEnumerable<IAnimal> animals)
@@ -107,9 +110,10 @@ namespace SavannaApp.Logic
             var carnivores = animals.Where(a => !a.IsPredator).ToList();
             var closestPrey = _coordinatesLogic.GetClosestPreyCoordinatesInVisionRange(predator, carnivores);
 
-            return closestPrey != null
-                ? _coordinatesLogic.GetPathToPrey(predator, closestPrey)
-                : _coordinatesLogic.GetPath(predator.Coordinates);
+            if (closestPrey == null)
+                return _coordinatesLogic.GetPath(predator.Coordinates);
+
+            return _coordinatesLogic.GetPathToPrey(predator, closestPrey);
         }
 
         public void Spawn(IAnimal animal, List<IAnimal> animals)

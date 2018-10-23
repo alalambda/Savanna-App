@@ -6,7 +6,7 @@ using SavannaApp.Model;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SavannaApp.HealthLogicTests
+namespace SavannaApp.Tests
 {
     [TestFixture]
     public class HealthLogicTests
@@ -54,10 +54,9 @@ namespace SavannaApp.HealthLogicTests
         public void Die_When_ZeroHealth_Expect_MarkedWithX()
         {
             //Arrange
-            var animalList = new List<IAnimal>();
             var animal = new Lion() { Health = 0 };
-            animalList.Add(animal);
-
+            var animalList = new List<IAnimal> { animal };
+            
             //Act
             var result = _classUnderTest.Die(animalList).Where(x => x == animal).FirstOrDefault();
 
