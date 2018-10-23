@@ -3,14 +3,22 @@ using SavannaApp.Interfaces;
 using SavannaApp.Model;
 using System.Linq;
 using SavannaApp.Constants;
+using System;
 
 namespace SavannaApp.Logic
 {
-    class MovementLogic : IMovementLogic
+    public class MovementLogic : IMovementLogic
     {
         private readonly ICoordinatesLogic _coordinatesLogic;
         private readonly IHealthLogic _healthLogic;
         private readonly IAnimalLogic _animalLogic;
+
+        public MovementLogic(ICoordinatesLogic coordinatesLogic, IHealthLogic healthLogic, IAnimalLogic animalLogic)
+        {
+            _coordinatesLogic = coordinatesLogic;
+            _healthLogic = healthLogic;
+            _animalLogic = animalLogic;
+        }
 
         public MovementLogic()
         {
@@ -19,14 +27,9 @@ namespace SavannaApp.Logic
             _animalLogic = new AnimalLogic();
         }
 
-        public List<IAnimal> Move(IAnimal animal, IEnumerable<IAnimal> animals)
+        public List<IAnimal> Behave(IAnimal animal, IEnumerable<IAnimal> animals)
         {
-            if (animal.Health <= 0)
-            {
-                animals = _healthLogic.Die(animals.ToList());
-            }
-
-            animals = _animalLogic.RemoveDeadAnimals(animals);
+            animals = TryDie(animal, animals);
 
             animals = TryGiveBirth(animal, animals);
 
@@ -44,6 +47,18 @@ namespace SavannaApp.Logic
             }
 
             return animals.ToList();
+        }
+
+        private IEnumerable<IAnimal> TryDie(IAnimal animal, IEnumerable<IAnimal> animals)
+        {
+            if (animal.Health <= 0)
+            {
+                animals = _healthLogic.Die(animals.ToList());
+            }
+
+            animals = _animalLogic.RemoveDeadAnimals(animals);
+
+            return animals;
         }
 
         private IEnumerable<IAnimal> TryGiveBirth(IAnimal animal, IEnumerable<IAnimal> animals)
