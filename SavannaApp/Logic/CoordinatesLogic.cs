@@ -187,7 +187,15 @@ namespace SavannaApp.Logic
             var x = carnivore.Coordinates.X + escapeDirection.X;
             var y = carnivore.Coordinates.Y + escapeDirection.Y;
 
-            return AdjustCoordinates(new Coordinates(x, y));
+            var escapeDirectionCoordinates = AdjustCoordinates(new Coordinates(x, y));
+
+            if (carnivore.Coordinates.Equals(escapeDirectionCoordinates))
+            {
+                escapeDirectionCoordinates.X = carnivore.Coordinates.X + escapeDirection.Y;
+                escapeDirectionCoordinates.Y = carnivore.Coordinates.Y + escapeDirection.X;
+            }
+
+            return AdjustCoordinates(escapeDirectionCoordinates);
         }
 
         public Coordinates GetClosestPreyCoordinatesInVisionRange(IAnimal predator, IEnumerable<IAnimal> carnivores)
