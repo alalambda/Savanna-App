@@ -69,20 +69,20 @@ namespace SavannaApp.Logic
             return newCoordinates;
         }
 
-        private IEnumerable<Coordinates> GetDirectionsToAnimals
+        private IEnumerable<Coordinates> GetEscapeDirections
             (IAnimal animal, IEnumerable<Coordinates> animalsCoordinates)
         {
             int x = 0;
             int y = 0;
-            var directionsToAnimals = new List<Coordinates>();
+            var escapeDirections = new List<Coordinates>();
             foreach (var predatorCoordinate in animalsCoordinates)
             {
-                x = GetDirectionToAnimal(animal.Coordinates.X, predatorCoordinate.X);
-                y = GetDirectionToAnimal(animal.Coordinates.Y, predatorCoordinate.Y);
-                Coordinates directionToAnimal = new Coordinates(x, y);
-                directionsToAnimals.Add(directionToAnimal);
+                x = animal.Coordinates.X - predatorCoordinate.X;
+                y = animal.Coordinates.Y - predatorCoordinate.Y;
+                Coordinates escapeDirection = new Coordinates(x, y);
+                escapeDirections.Add(escapeDirection);
             }
-            return directionsToAnimals;
+            return escapeDirections;
         }
 
         private int GetDirectionToAnimal(int animalCoordinate1, int animalCoordinate2)
@@ -162,16 +162,18 @@ namespace SavannaApp.Logic
         private Coordinates GetEscapeDirection(IAnimal carnivore, IEnumerable<Coordinates> predatorCoordinatesInVisionRange)
         {
             if (predatorCoordinatesInVisionRange == null)
-            {
                 return null;
+
+            int x = 0;
+            int y = 0;
+            var escapeDirections = GetEscapeDirections(carnivore, predatorCoordinatesInVisionRange);
+            foreach (var escapeDirection in escapeDirections)
+            {
+                x += escapeDirection.X;
+                y += escapeDirection.Y;
             }
 
-            var directionsToPredators = GetDirectionsToAnimals(carnivore, predatorCoordinatesInVisionRange);
-            var escapeDirection = GenerateRandomCoordinates(-1, 2);
-            while (directionsToPredators.Any(x => x.Equals(escapeDirection)))
-                escapeDirection = GenerateRandomCoordinates(-1, 2);
-
-            return escapeDirection;
+            return new Coordinates(Math.Sign(x), Math.Sign(y));
         }
 
         public Coordinates GetEscapePath(IAnimal carnivore, IEnumerable<Coordinates> predatorCoordinatesInVisionRange)
