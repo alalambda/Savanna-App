@@ -97,7 +97,7 @@ namespace SavannaApp.Logic
             var predators = animals.Where(a => a.IsPredator).ToList();
             var predatorsInVisionRange = _coordinatesLogic.GetPredatorsCoordinatesInVisionRange(carnivore, predators);
 
-            if (predatorsInVisionRange == null)
+            if (predatorsInVisionRange == null || predatorsInVisionRange.Count() == 0)
             {
                 return _coordinatesLogic.GetPath(carnivore.Coordinates);
             }

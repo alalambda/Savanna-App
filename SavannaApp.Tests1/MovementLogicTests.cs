@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
+using SavannaApp.Constants;
 using SavannaApp.Interfaces;
 using SavannaApp.Logic;
 using SavannaApp.Model;
@@ -30,15 +31,117 @@ namespace SavannaApp.Tests
         [Test]
         public void Should_Spawn()
         {
-            var expectedCoordinates = new Coordinates(1, 1);
+            // Arrange
             var testAnimal = new Lion();
 
-            _coordinatesLogicMock
-                .Setup(e => e.GetRandomAvailableCoordinates(testAnimal, It.IsAny<List<IAnimal>>()))
-                .Returns(expectedCoordinates);
-
+            // Act
             _movementLogic.Spawn(testAnimal, new List<IAnimal>());
-            Assert.AreEqual(expectedCoordinates, testAnimal.Coordinates);
+
+            // Assert
+            _coordinatesLogicMock.Verify(x => x.GetRandomAvailableCoordinates(It.IsAny<IAnimal>(), It.IsAny<List<IAnimal>>()), Times.Once);
+        }
+
+        [Test]
+        public void Behave_When_AnimalIsCarnivore_And_NoPredatorInVisionRange_Expect_GetPathCall()
+        {
+            // Arrange
+            var carnivore = new Antelope() { Coordinates = new Coordinates(0, 1) };
+            var animalList = new List<IAnimal> { carnivore };
+
+            _animalLogicMock
+                .Setup(x => x.RemoveDeadAnimals(animalList))
+                .Returns(() => animalList);
+
+            _coordinatesLogicMock
+                .Setup(x => x.GetPredatorsCoordinatesInVisionRange(carnivore, It.IsAny<List<IAnimal>>()))
+                .Returns(() => new List<Coordinates>());
+
+            _coordinatesLogicMock
+                .Setup(x => x.GetPath(carnivore.Coordinates))
+                .Returns(() => carnivore.Coordinates);
+
+            // Act
+            _movementLogic.Behave(carnivore, animalList);
+
+            // Assert
+            _coordinatesLogicMock.Verify(x => x.GetPath(carnivore.Coordinates));
+        }
+
+        [Test]
+        public void Behave_When_AnimalIsCarnivore_And_PredatorInVisionRange_Expect_GetEscapePathCall()
+        {
+            // Arrange
+            var carnivore = new Antelope() { Coordinates = new Coordinates(0, 1) };
+            var predator = new Lion() { Coordinates = new Coordinates(0, 0) };
+            var animalList = new List<IAnimal> { carnivore, predator };
+
+            _animalLogicMock
+                .Setup(x => x.RemoveDeadAnimals(animalList))
+                .Returns(() => animalList);
+
+            _coordinatesLogicMock
+                .Setup(x => x.GetPredatorsCoordinatesInVisionRange(carnivore, It.IsAny<List<IAnimal>>()))
+                .Returns(() => new List<Coordinates> { predator.Coordinates });
+
+            // Act
+            _movementLogic.Behave(carnivore, animalList);
+
+            // Assert
+            _coordinatesLogicMock.Verify(x => x.GetEscapePath(carnivore, It.IsAny<List<Coordinates>>()));
+        }
+
+        [Test]
+        public void Behave_When_PredatorAndCarnivoreCoordinatesNotEqual_Expect_SameCarnivore()
+        {
+            // Arrange
+            var predator = new Lion() { Coordinates = new Coordinates(6, 5) };
+            var carnivore1 = new Antelope() { Coordinates = new Coordinates(4, 5) };
+            var carnivore2 = new Antelope() { Coordinates = new Coordinates(5, 5) };
+            var animalList = new List<IAnimal> { predator, carnivore1, carnivore2 };
+
+            _animalLogicMock
+                .Setup(x => x.RemoveDeadAnimals(animalList))
+                .Returns(() => animalList);
+
+            _coordinatesLogicMock
+                .Setup(x => x.GetPath(predator.Coordinates))
+                .Returns(() => predator.Coordinates);
+
+            // Act 
+            var result = _movementLogic.Behave(predator, animalList);
+
+            // Assert
+            Assert.False(result.Exists(x => !x.IsPredator && x.Symbol == ConstantValues.Dead));
+        }
+
+        [Test]
+        public void Behave_When_PredatorAndCarnivoreCoordinatesAreEqual_Expect_MarkCarnivoreWithX()
+        {
+            // Arrange
+            var predator = new Lion() { Coordinates = new Coordinates(4, 5) };
+            var carnivore1 = new Antelope() { Coordinates = new Coordinates(4, 5) };
+            var carnivore2 = new Antelope() { Coordinates = new Coordinates(5, 5) };
+            var animalList = new List<IAnimal> { predator, carnivore1, carnivore2 };
+
+            _animalLogicMock
+                .Setup(x => x.RemoveDeadAnimals(animalList))
+                .Returns(() => animalList);
+
+            _coordinatesLogicMock
+                .Setup(x => x.GetPath(predator.Coordinates))
+                .Returns(() => predator.Coordinates);
+
+            // Act
+            var result = _movementLogic.Behave(predator, animalList);
+
+            // Assert
+            Assert.IsTrue(result.Exists(x => !x.IsPredator 
+                            && x.Symbol == ConstantValues.Dead 
+                            && x.Coordinates.Equals(predator.Coordinates)));
+
+            Assert.IsTrue(result.Exists(x => !x.IsPredator
+                            && x.Symbol != ConstantValues.Dead
+                            && x.Coordinates.Equals(carnivore2.Coordinates)));
         }
 
         [Test]
@@ -52,6 +155,7 @@ namespace SavannaApp.Tests
             _animalLogicMock
                 .Setup(x => x.RemoveDeadAnimals(animalList))
                 .Returns(() => animalList);
+
             _animalLogicMock
                 .Setup(x => x.Spawn(animal, animalList))
                 .Returns(() => null);
@@ -61,7 +165,7 @@ namespace SavannaApp.Tests
                 .Returns(() => preyCoordinates);
 
             // Act
-            var result = _movementLogic.Behave(animal, animalList);
+            _movementLogic.Behave(animal, animalList);
 
             // Assert
             _coordinatesLogicMock.Verify(x => x.GetPathToPrey(animal, preyCoordinates));
@@ -74,16 +178,19 @@ namespace SavannaApp.Tests
             var animal = new Lion();
             var animalList = new List<IAnimal> { animal };
 
-            _animalLogicMock.Setup(x => x.RemoveDeadAnimals(animalList))
+            _animalLogicMock
+                .Setup(x => x.RemoveDeadAnimals(animalList))
                 .Returns(() => animalList);
-            _animalLogicMock.Setup(x => x.Spawn(animal, animalList))
+
+            _animalLogicMock
+                .Setup(x => x.Spawn(animal, animalList))
                 .Returns(() => null);
 
             _coordinatesLogicMock.Setup(x => x.GetClosestPreyCoordinatesInVisionRange(animal, animalList))
                 .Returns(() => null);
 
             // Act
-            var result = _movementLogic.Behave(animal, animalList);
+            _movementLogic.Behave(animal, animalList);
 
             // Assert
             _coordinatesLogicMock.Verify(x => x.GetPath(animal.Coordinates));
@@ -96,7 +203,8 @@ namespace SavannaApp.Tests
             var animal = new Antelope { Health = 0 };
             var animalList = new List<IAnimal> { animal };
 
-            _animalLogicMock.Setup(x => x.RemoveDeadAnimals(animalList))
+            _animalLogicMock
+                .Setup(x => x.RemoveDeadAnimals(animalList))
                 .Returns(() => animalList);
 
             // Act
@@ -113,7 +221,8 @@ namespace SavannaApp.Tests
             var animal = new Lion { Health = 7.5m };
             var animalList = new List<IAnimal> { animal };
 
-            _animalLogicMock.Setup(x => x.RemoveDeadAnimals(animalList))
+            _animalLogicMock
+                .Setup(x => x.RemoveDeadAnimals(animalList))
                 .Returns(() => animalList);
 
             // Act
@@ -130,9 +239,11 @@ namespace SavannaApp.Tests
             var animal = new Lion();
             var animalList = new List<IAnimal> { animal };
 
-            _animalLogicMock.Setup(x => x.RemoveDeadAnimals(animalList))
+            _animalLogicMock
+                .Setup(x => x.RemoveDeadAnimals(animalList))
                 .Returns(() => animalList);
-            _animalLogicMock.Setup(x => x.Spawn(animal, animalList))
+            _animalLogicMock
+                .Setup(x => x.Spawn(animal, animalList))
                 .Returns(() => new Lion());
 
             // Act
@@ -149,9 +260,11 @@ namespace SavannaApp.Tests
             var animal = new Lion();
             var animalList = new List<IAnimal> { animal };
 
-            _animalLogicMock.Setup(x => x.RemoveDeadAnimals(animalList))
+            _animalLogicMock
+                .Setup(x => x.RemoveDeadAnimals(animalList))
                 .Returns(() => animalList);
-            _animalLogicMock.Setup(x => x.Spawn(animal, animalList))
+            _animalLogicMock
+                .Setup(x => x.Spawn(animal, animalList))
                 .Returns(() => null);
 
             // Act

@@ -75,10 +75,10 @@ namespace SavannaApp.Logic
             int x = 0;
             int y = 0;
             var directionsToAnimals = new List<Coordinates>();
-            foreach (var predatorCoordinates in animalsCoordinates)
+            foreach (var predatorCoordinate in animalsCoordinates)
             {
-                x = GetDirectionToAnimal(animal.Coordinates.X, predatorCoordinates.X);
-                y = GetDirectionToAnimal(animal.Coordinates.Y, predatorCoordinates.Y);
+                x = GetDirectionToAnimal(animal.Coordinates.X, predatorCoordinate.X);
+                y = GetDirectionToAnimal(animal.Coordinates.Y, predatorCoordinate.Y);
                 Coordinates directionToAnimal = new Coordinates(x, y);
                 directionsToAnimals.Add(directionToAnimal);
             }
