@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Composition;
 
-namespace SavannaApp.Model
+namespace Contracts
 {
     public class Coordinates
     {

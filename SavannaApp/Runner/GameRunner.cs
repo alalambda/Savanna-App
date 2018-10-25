@@ -14,7 +14,6 @@ namespace SavannaApp.Runner
     {
         private readonly AnimalFactory _animalFactory;
 
-        //[ImportMany(typeof(IAnimal))]
         private List<IAnimal> _animals;
 
         private readonly IUserInterface _userInterface;

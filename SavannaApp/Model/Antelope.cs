@@ -4,7 +4,7 @@ using System.Composition;
 
 namespace SavannaApp.Model
 {
-    //[Export(typeof(IAnimal))]
+    [Export(typeof(IAnimal))]
     public class Antelope : IAnimal
     {
         public decimal Health { get; set; } = 50m;

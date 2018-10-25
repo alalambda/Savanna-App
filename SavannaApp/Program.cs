@@ -6,6 +6,9 @@ namespace SavannaApp
     {
         static void Main(string[] args)
         {
+            var t = new ImportingLibrary.Importer();
+            t.DoImport();
+
             new GameRunner().Start();
         }
     }

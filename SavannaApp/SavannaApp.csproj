@@ -8,7 +8,14 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Composition" Version="1.0.31" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="System.ComponentModel.Composition" Version="4.5.0" />
     <PackageReference Include="System.Linq" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ImportingLibrary">
+      <HintPath>..\ImportingLibrary\bin\Release\netcoreapp2.1\ImportingLibrary.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
