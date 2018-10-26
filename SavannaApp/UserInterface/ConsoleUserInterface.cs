@@ -1,4 +1,5 @@
-﻿using SavannaApp.Constants;
+﻿using Contracts;
+using SavannaApp.Constants;
 using SavannaApp.Interfaces;
 using SavannaApp.Logic;
 using SavannaApp.Model;

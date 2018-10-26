@@ -1,15 +1,53 @@
-﻿using SavannaApp.Runner;
+﻿using Contracts;
+using SavannaApp.Interfaces;
+using SavannaApp.Runner;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
 
 namespace SavannaApp
 {
     class Program
     {
+        // https://stackoverflow.com/questions/30669648/mef-import-doesnt-work-as-expected
+        [ImportMany(typeof(IAnimal))]
+        IEnumerable<IAnimal> Animals { get; set; }
+
+        List<IAnimal> loadedAnimals { get; set; }
+
+        CompositionContainer _container;
+
         static void Main(string[] args)
         {
-            var t = new ImportingLibrary.Importer();
-            t.DoImport();
+            var p = new Program();
+            p.Run();
 
             new GameRunner().Start();
+        }
+
+        public void Run()
+        {
+            Compose();
+
+            foreach (var loadedAnimal in loadedAnimals)
+            {
+                Console.WriteLine(loadedAnimal.Symbol);
+            }
+            Console.WriteLine();
+            Thread.Sleep(2000);
+        }
+
+        public void Compose()
+        {
+            var catalog = new DirectoryCatalog(Environment.CurrentDirectory);
+            _container = new CompositionContainer(catalog);
+            _container.ComposeParts(this);
+
+            loadedAnimals = Animals.ToList();
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using SavannaApp.Factory;
+﻿using Contracts;
+using SavannaApp.Factory;
 using SavannaApp.Interfaces;
 using SavannaApp.Logic;
 using SavannaApp.UserInterface;
 using System;
 using System.Collections.Generic;
-using System.Composition;
 using System.Linq;
 using System.Threading;
 

@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using SavannaApp.Interfaces;
-using SavannaApp.Model;
 using System.Linq;
 using SavannaApp.Constants;
-using System;
+using Contracts;
 
 namespace SavannaApp.Logic
 {

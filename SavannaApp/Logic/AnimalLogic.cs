@@ -1,7 +1,7 @@
-﻿using SavannaApp.Constants;
+﻿using Contracts;
+using SavannaApp.Constants;
 using SavannaApp.Factory;
 using SavannaApp.Interfaces;
-using SavannaApp.Model;
 using System.Collections.Generic;
 using System.Linq;
 

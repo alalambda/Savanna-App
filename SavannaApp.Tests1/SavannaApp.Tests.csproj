@@ -18,4 +18,10 @@
     <ProjectReference Include="..\SavannaApp\SavannaApp.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Contracts">
+      <HintPath>..\DLL\Contracts.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

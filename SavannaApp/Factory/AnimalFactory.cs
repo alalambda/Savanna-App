@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using SavannaApp.Interfaces;
-using SavannaApp.Model;
+using Contracts;
 
 namespace SavannaApp.Factory
 {
