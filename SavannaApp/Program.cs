@@ -17,8 +17,6 @@ namespace SavannaApp
         [ImportMany(typeof(IAnimal))]
         IEnumerable<IAnimal> Animals { get; set; }
 
-        List<IAnimal> loadedAnimals { get; set; }
-
         CompositionContainer _container;
 
         static void Main(string[] args)
@@ -33,9 +31,9 @@ namespace SavannaApp
         {
             Compose();
 
-            foreach (var loadedAnimal in loadedAnimals)
+            foreach (var animal in Animals)
             {
-                Console.WriteLine(loadedAnimal.Symbol);
+                Console.WriteLine(animal.Symbol);
             }
             Console.WriteLine();
             Thread.Sleep(2000);
@@ -46,8 +44,6 @@ namespace SavannaApp
             var catalog = new DirectoryCatalog(Environment.CurrentDirectory);
             _container = new CompositionContainer(catalog);
             _container.ComposeParts(this);
-
-            loadedAnimals = Animals.ToList();
         }
     }
 }
