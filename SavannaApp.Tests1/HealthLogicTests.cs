@@ -5,6 +5,7 @@ using SavannaApp.Logic;
 using SavannaApp.Model;
 using System.Collections.Generic;
 using System.Linq;
+using Contracts;
 
 namespace SavannaApp.Tests
 {

@@ -1,7 +1,5 @@
-﻿using Contracts;
-using SavannaApp.Constants;
-using SavannaApp.Interfaces;
-using System.Composition;
+﻿using System.ComponentModel.Composition;
+using Contracts;
 
 namespace SavannaApp.Model
 {

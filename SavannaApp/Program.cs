@@ -1,21 +1,17 @@
 ﻿using Contracts;
-using SavannaApp.Interfaces;
 using SavannaApp.Runner;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 
 namespace SavannaApp
 {
     class Program
     {
-        // https://stackoverflow.com/questions/30669648/mef-import-doesnt-work-as-expected
         [ImportMany(typeof(IAnimal))]
-        IEnumerable<IAnimal> Animals { get; set; }
+        public List<IAnimal> Animals { get; set; }
 
         CompositionContainer _container;
 

@@ -1,5 +1,4 @@
 ﻿using Contracts;
-using SavannaApp.Model;
 using System.Collections.Generic;
 
 namespace SavannaApp.Interfaces

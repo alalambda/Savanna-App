@@ -2,7 +2,6 @@
 using SavannaApp.Constants;
 using SavannaApp.Interfaces;
 using SavannaApp.Logic;
-using SavannaApp.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;

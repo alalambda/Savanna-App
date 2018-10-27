@@ -1,5 +1,5 @@
-﻿using Contracts;
-using System.Composition;
+﻿using System.ComponentModel.Composition;
+using Contracts;
 
 namespace SavannaApp.Model
 {
